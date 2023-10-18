@@ -1,0 +1,192 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{%block content%}
+<style>
+#nav-btn:hover {
+    text-decoration: underline;
+}
+#main-div1{
+    height: 500px;
+}
+#main-img{
+    height: 500px;
+    width: 800px;
+    border-radius: 10px;
+    border-color: transparent;
+}
+.list-group-item{
+  border: none;
+  padding-top: 5%;
+}
+#footer{
+  height: 120px;
+}
+
+.footer .social-media {
+  padding-top: 10px;
+  margin-right: 20px;
+}
+
+.logo {
+  height: 50px;
+  width: 50px;
+}
+.logo:hover{
+  height: 60px;
+  width: 60px;
+}
+#footer-item:hover{
+  text-decoration: underline;
+}
+</style>
+<!-- Header start -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light my-2">
+    <div class="container-fluid ms-5 me-5">
+      <img src="{% static 'welcome_page/demo_logo.png' %}" alt="demo_logo" width="46" height="40">
+      <a class="navbar-brand" href="#"><b>ScholarShare</b></a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto my-2 mb-2 mb-lg-0 gap-5">
+          <li class="nav-item">
+            <button type="button" class="btn btn-primary" id="nav-btn" style="border-radius: 8px;">
+                <a href="" class="text-light text-decoration-none"><b>Home</b></a>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-light" id="nav-btn">
+                <a href="" class="text-decoration-none" style="color: black;"><b>Sign Up</b></a>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-light" id="nav-btn" >
+                <a href="" class="text-decoration-none" style="color: black;"><b>Log In</b></a>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-light" id="nav-btn">
+                <a href="" class="text-decoration-none" style="color: black;"><b>Contact</b></a>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-light" id="nav-btn">
+                <a href="" class="text-decoration-none" style="color: black;"><b>FAQs</b></a>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+<!-- Header end,main part-1 start -->
+<div class="container my-3">
+    <div class="row" id="main-div1">
+      <div class="col-sm-5 my-5">
+         <p class="fs-1 fw-bolder fst-italic">Empowering Students,<br>Fostering Futures</p>
+         <p class="text-muted">
+            Forget about the old rules, we’re here to help you.
+          </p>
+          <button type="button" class="btn btn-primary" id="nav-btn" style="border-radius: 8px;">
+            <a href="" class="text-light text-decoration-none"><b>Join us today</b></a>
+        </button>
+        <p class="fs-3 fw-bolder fst-italic my-5">Trusted by</p>
+        <div class="row">
+            <div class="col-sm-4">
+              <ul class="list-unstyled">
+                <li>
+                    <img src="{% static 'welcome_page/uiu.png' %}" alt="demo_logo" width="56" height="50">
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <ul class="list-unstyled">
+                <img src="{% static 'welcome_page/dccsa.png' %}" alt="demo_logo" width="76" height="70">
+              </ul>
+            </div>
+            <div class="col-sm-4">
+                <ul class="list-unstyled">
+                    <img src="{% static 'welcome_page/ccc.png' %}" alt="demo_logo" width="76" height="70">
+                </ul>
+              </div>
+        </div>
+      </div>
+      <div class="col-sm-6 my-5">
+        <p class="fs-5 fst-italic"><b style="margin-left: 150px;">Thank You For Staying With Us...</b></p>
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            {% for image in image_filenames %}
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+            {% endfor %}
+          </div>
+          <div class="carousel-inner">
+            {% for image in image_filenames %}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{% static 'welcome_page/' %}{{ image }}" class="d-block w-100" alt="Image {{ forloop.counter }}" style="border-radius: 10px;">
+                <div class="carousel-caption d-none d-md-block">
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <script>
+          $(document).ready(function() {
+            $('#carouselExampleCaptions').carousel({
+              interval: 1000,
+              pause: 'hover',
+            });
+          });
+        </script>
+    </div>
+  </div>
+</div>
+<!-- Main part-1 ends, main part-2 start -->
+<div class="container my-5">
+  <div class="row" style="height: 500px;">
+    <div class="col-sm-6">
+      <img src="{% static 'welcome_page/main-1.jpg' %}" class="img-fluid" alt="..." style="border-radius: 10px;">
+    </div>
+    <div class="col-sm-6">
+      <p class="fs-2 fw-bold">Why You Should Join Us?</p>
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item"><img src="{% static 'welcome_page/dollar.png' %}" alt="" height="44px" width="50px"></li>
+        <li class="list-group-item"><p class="fs-4 fst-italic">No cost to join</p></li>
+      </ul>
+      <ul class="list-group list-group-horizontal-sm">
+        <li class="list-group-item"><img src="{% static 'welcome_page/loan.png' %}" alt="" height="44px" width="50px"></li>
+        <li class="list-group-item"><p class="fs-4 fst-italic">Get emergency loan</p></li>
+      </ul>
+      <ul class="list-group list-group-horizontal-md">
+        <li class="list-group-item"><img src="{% static 'welcome_page/earn.png' %}" alt="" height="44px" width="50px"></li>
+        <li class="list-group-item"><p class="fs-4 fst-italic">Earn extra by giving loan others</p></li>
+      </ul>
+      <ul class="list-group list-group-horizontal-lg">
+        <li class="list-group-item"><img src="{% static 'welcome_page/help.png' %}" alt="" height="44px" width="50px"></li>
+        <li class="list-group-item"><p class="fs-4 fst-italic">Help people by donating </p></li>
+      </ul>
+  </div>
+</div>
+</div>
+<!-- Main part-2 ends, footer start -->
+<nav class="navbar navbar-dark bg-dark" id="footer">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="{% static 'welcome_page/demo_logo.png' %}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+      Copyright TeamScrum 2023
+    </a>
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link text-light" aria-current="page" href="#" id="footer-item">Terms of use</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="#" id="footer-item">Contact us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="#" id="footer-item">About</a>
+      </li>
+    </ul>
+    <div class="social-media">
+      <a href="https://www.facebook.com/"><img src="{% static 'welcome_page/facebook_icon.png' %}" alt="Facebook" class="logo"></a>
+      <a href="https://www.instagram.com/teammeta"><img src="{% static 'welcome_page/instagram_icon.png' %}" alt="Instagram" class="logo"></a>
+      <a href="https://www.linkedin.com/company/teammeta"><img src="{% static 'welcome_page/linkedin_icon.png' %}" alt="Linkedin" class="logo"></a>
+    </div>
+  </div>
+</nav>
+{%endblock%}
