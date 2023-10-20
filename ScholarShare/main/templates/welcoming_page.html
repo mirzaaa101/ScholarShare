@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {% load static %}
-
+{%block title%}ScholarShare{%endblock%}
 {%block content%}
 <style>
 #nav-btn:hover {
@@ -54,12 +54,12 @@
           </li>
           <li class="nav-item">
             <button type="button" class="btn btn-light" id="nav-btn">
-                <a href="" class="text-decoration-none" style="color: black;"><b>Sign Up</b></a>
+                <a href="{%url 'register'%}" class="text-decoration-none" style="color: black;"><b>Sign Up</b></a>
             </button>
           </li>
           <li class="nav-item">
             <button type="button" class="btn btn-light" id="nav-btn" >
-                <a href="" class="text-decoration-none" style="color: black;"><b>Log In</b></a>
+                <a href="{%url 'login'%}" class="text-decoration-none" style="color: black;"><b>Log In</b></a>
             </button>
           </li>
           <li class="nav-item">
@@ -79,13 +79,13 @@
 <!-- Header end,main part-1 start -->
 <div class="container my-3">
     <div class="row" id="main-div1">
-      <div class="col-sm-5 my-5">
+      <div class="col-sm-6 my-5">
          <p class="fs-1 fw-bolder fst-italic">Empowering Students,<br>Fostering Futures</p>
          <p class="text-muted">
             Forget about the old rules, we’re here to help you.
           </p>
           <button type="button" class="btn btn-primary" id="nav-btn" style="border-radius: 8px;">
-            <a href="" class="text-light text-decoration-none"><b>Join us today</b></a>
+            <a href="{%url 'register'%}" class="text-light text-decoration-none"><b>Join us today</b></a>
         </button>
         <p class="fs-3 fw-bolder fst-italic my-5">Trusted by</p>
         <div class="row">
@@ -109,7 +109,7 @@
         </div>
       </div>
       <div class="col-sm-6 my-5">
-        <p class="fs-5 fst-italic"><b style="margin-left: 150px;">Thank You For Staying With Us...</b></p>
+        <!-- <p class="fs-5 fst-italic"><b style="margin-left: 5px;">Thank You For Staying With Us...</b></p> -->
         <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-indicators">
             {% for image in image_filenames %}

@@ -1,0 +1,88 @@
+{% extends 'base.html'%}
+{% load static %}
+{%block title%}Sign Up{%endblock%}
+{%block content%}
+<style>
+    .container {
+        height: 750px;
+        width: 540px;
+        background-color: transparent;
+        margin: 0 0 0 33%;
+    }
+
+    #msg {
+        width: 800px;
+        margin-left: 20%;
+    }
+</style>
+<nav class="navbar navbar-light bg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'welcoming_page' %}">
+            <img src="{% static 'welcome_page/demo_logo.png' %}" alt="demo_logo" width="46" height="40">
+            ScholarShare
+        </a>
+    </div>
+</nav>
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="msg">
+        <strong> {{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+<div class="container">
+    <p class="fs-2 fw-bold">Sign Up</p>
+    <form method="POST" action="{% url 'register' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <select class="form-select" name="usertype" aria-label="Default select example">
+                <option selected>Select Your Type</option>
+                <option value="Individual">Individual</option>
+                <option value="Club">Club</option>
+            </select>
+        </div>
+        <div class="mb-2">
+            <label for="exampleInputEmail1" class="form-label">Email Address</label>
+            <input type="email" class="form-control" name="username" pattern=".*uiu.ac.bd$" placeholder="Please signup yourself with a valid UIU email" required>
+        </div>
+        <div class="mb-2">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Password must be 8 characters long" required>
+        </div>
+        <div class="mb-2">
+            <label for="exampleInputPassword1" class="form-label">Full Name</label>
+            <input type="text" class="form-control" name="full_name" placeholder="Enter NID/UIUID Name" required>
+        </div>
+        <div class="mb-2">
+            <label for="exampleInputPassword1" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" name="phone" placeholder="Enter Your Bkash/Nagad Phone Number" required>
+        </div>
+        <div class="input-group mb-2">
+            <input type="file" class="form-control" id="inputGroupFile02" name="profile_photo" accept="image/jpeg, image/png" required>
+            <label class="input-group-text" for="inputGroupFile02">Profile Photo</label>
+        </div>
+        <div class="input-group mb-2">
+            <input type="file" class="form-control" id="inputGroupFile02" name="uiuid_photo" accept="image/jpeg, image/png" required>
+            <label class="input-group-text" for="inputGroupFile02">UIU ID Photo</label>
+        </div>
+        <div class="input-group mb-2">
+            <input type="file" class="form-control" id="inputGroupFile02" name="nid_photo" accept="image/jpeg, image/png" required>
+            <label class="input-group-text" for="inputGroupFile02">NID Photo</label>
+        </div>
+        <div class="mb-2">
+            <label for="exampleInputPassword1" class="form-label">
+                <a href="{% url 'login' %}" class="text-dark">Already have an account?</a>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary" name="signup">Signup</button>
+    </form>
+<!-- <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Signup</button>
+</form> -->
+</div>
+{%endblock%}
