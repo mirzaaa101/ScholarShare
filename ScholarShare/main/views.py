@@ -13,6 +13,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 
+
 def welcoming_page(request):
     image_filenames = [
         'review1.jpg',
@@ -75,7 +76,7 @@ def register_user(request):
         current_site = get_current_site(request)
         email_subject = "Confirm your Email @ ScholarShare Login!!"
         message2 = render_to_string('confirm_login.html',{
-            'name': full_name,
+            'full_name': full_name,
             'domain': current_site.domain,
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': generate_token.make_token(user)
@@ -92,6 +93,7 @@ def register_user(request):
         return redirect('register')
     else:
         return render(request, 'register_user.html', {})
+
 def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -104,7 +106,7 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 messages.error(request, "You have been logged in successfully!")
-                return redirect('register')
+                return redirect('core:home')
             else:
                 messages.error(request, 'Sorry, your account is inactive. We will send you a confirmation email soon.')
                 return redirect('login')
@@ -112,4 +114,9 @@ def login_user(request):
             messages.error(request, "Sorry, your email/password is not correct. Please try again.")
             return redirect('login')
     else:
-        return render(request, 'login_user.html',{})
+        return render(request, 'login_user.html', {})
+
+
+
+def redirect_to_core(request, user):
+    return redirect('core:home')

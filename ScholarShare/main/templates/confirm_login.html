@@ -1,11 +1,10 @@
 {% autoescape off %}
 
-Welcome to ScholarShare Login!!
-Dear {name}
-Thank you for signing up to ScholarShare.
+Hello Dear,
+Thank you for signing up to ScholarShare👍.
 Please confirm your email by clicking on the following link:
 Confirmation Link: http://{{ domain }}{% url 'confirm_registration' uidb64=uid token=token %}
 
-------------------------------------
+------------------------------------------------------------------------------------------------
 Thanks for your patience - TeamScrum
 {% endautoescape %}
