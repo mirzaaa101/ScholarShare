@@ -17,7 +17,7 @@ cursorObj = mydb.cursor()
 # Create database
 cursorObj.execute("CREATE DATABASE IF NOT EXISTS scholarshare")
 
-# Connect to the 'crm' database
+# Connect to the 'scholarshare' database
 cursorObj.execute("USE scholarshare")
 
 print("Database has been created!!")

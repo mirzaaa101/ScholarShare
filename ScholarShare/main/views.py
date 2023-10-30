@@ -61,6 +61,11 @@ def register_user(request):
             messages.error(request, 'The email address is already in use.Please try with another email.')
             return redirect('register')
 
+        if len(password)>8:
+            messages.error(request,"Please use 8 characters for your password!!")
+            return redirect('register')
+
+
         user = User.objects.create_user(username, password=password, is_active = False)
         new_user = NewUser(
             usertype=usertype,
