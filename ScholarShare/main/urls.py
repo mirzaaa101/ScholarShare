@@ -7,5 +7,6 @@ urlpatterns = [
     path('confirm/<uidb64>/<token>', views.confirm_registration, name='confirm_registration'),
     path('login',views.login_user, name='login' ),
     path('logout',views.logout_user, name='logout' ),
+    path('faqs',views.faqs, name='faqs' ),
     path('redirect-to-core/', views.redirect_to_core, name='redirect_to_core'),
 ]

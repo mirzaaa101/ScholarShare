@@ -17,3 +17,13 @@ class NewUser(models.Model):
 
     def __str__(self):
         return f"{self.username}-[{self.full_name}]"
+
+
+class FAQ(models.Model):
+    f_id = models.AutoField(primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    question = models.CharField(max_length=200)
+    answer = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return f"{self.question}"
