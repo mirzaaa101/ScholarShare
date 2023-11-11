@@ -72,6 +72,11 @@
                 <a href="{%url 'faqs'%}" class="text-decoration-none" style="color: black;"><b>FAQs</b></a>
             </button>
           </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-light" id="nav-btn">
+                <a href="{% url 'about' %}" class="text-decoration-none" style="color: black;"><b>About</b></a>
+            </button>
+          </li>
         </ul>
       </div>
     </div>
@@ -179,7 +184,7 @@
         <a class="nav-link text-light" href="#" id="footer-item">Contact us</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-light" href="#" id="footer-item">About</a>
+        <a class="nav-link text-light" href="{% url 'about' %}" id="footer-item">About</a>
       </li>
     </ul>
     <div class="social-media">

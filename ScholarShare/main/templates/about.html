@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Allura|Josefin+Sans');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: white;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+
+        .wrapper {
+            margin-top: 3%;
+        }
+
+        .wrapper h1 {
+            font-family: 'Allura', cursive;
+            font-size: 52px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .team {
+            display: flex;
+            justify-content: center;
+            width: auto;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+
+        .team .team_member {
+            background: #fff;
+            margin: 5px;
+            margin-bottom: 50px;
+            width: 400px;
+            padding: 20px;
+            line-height: 20px;
+            color: #8e8b8b;
+            position: relative;
+        }
+
+        .team .team_member h3 {
+            color: black;
+            font-size: 26px;
+            margin-top: 50px;
+        }
+
+        .team .team_member p.role {
+            color: #625f5f;
+            margin: 12px 0;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .team .team_member .team_img {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #e4e1e1;
+        }
+
+        .team .team_member .team_img img {
+            width: 100px;
+            height: 100px;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <p class="fst-italic fs-6">ScholarShare, a web application developed by the ScrumTroops team to assist students in managing their financial needs and supporting student-driven fundraising campaigns. ScholarShare offers a range of features to empower students, promote financial literacy, and enhance the sense of community within educational institutions. For more <a href="https://github.com/mirzaaa101/ScholarShare">visit here.</a></p>
+           <h6> </h6>
+        </div>
+        <h1>Our Team</h1>
+        <div class="team">
+            {% for dev in devs %}
+            <div class="team_member">
+                <div class="team_img">
+                    <img src="{{ dev.dev_img.url }}" alt="Team_image">
+                </div>
+                <h3>{{ dev.dev_name }}</h3>
+                <p class="role">{{ dev.dev_role}}</p>
+                <p>{{ dev.dev_description }}</p>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</body>
+
+</html>

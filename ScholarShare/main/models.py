@@ -11,8 +11,13 @@ class NewUser(models.Model):
     profile_photo = models.ImageField(upload_to='Files/profile_photos/')
     uiuid = models.ImageField(upload_to='Files/uiuid_photos/')
     nid = models.ImageField(upload_to='Files/nid_photos/')
-    is_active = models.BooleanField(default=False)
     confirmation_token = models.CharField(max_length=100, blank=True, null=True)
+    userid = models.CharField(max_length=20, blank=True, null=True)
+
+
+    def save(self, *args, **kwargs):
+        self.userid = self.full_name.split()[0] + self.phone[5:9]
+        super().save(*args, **kwargs)
 
 
     def __str__(self):
@@ -27,3 +32,18 @@ class FAQ(models.Model):
 
     def __str__(self):
         return f"{self.question}"
+
+
+
+class About(models.Model):
+    dev_img = models.ImageField(upload_to='Files/Teams/')
+    dev_name = models.CharField(max_length=100)
+    dev_role = models.CharField(max_length=50)
+    dev_description = models.CharField(max_length=300)
+
+
+    def __str__(self):
+        return f"{self.dev_name}"
+
+    class Meta:
+        verbose_name_plural = 'About'

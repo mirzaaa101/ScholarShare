@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from.models import NewUser, FAQ
+from.models import NewUser, FAQ, About
 from ScholarShare import settings
 from django.core.mail import send_mail,EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
@@ -129,3 +129,7 @@ def redirect_to_core(request, user):
 def faqs(request):
     faqs = FAQ.objects.all()
     return render(request,'faqs.html', {'faqs':faqs})
+
+def about(request):
+    devs = About.objects.all()
+    return render(request,'about.html', {'devs':devs})
