@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from.models import NewUser, FAQ, About
+from.models import NewUser, FAQ, About, Message
 from ScholarShare import settings
 from django.core.mail import send_mail,EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
@@ -133,3 +133,20 @@ def faqs(request):
 def about(request):
     devs = About.objects.all()
     return render(request,'about.html', {'devs':devs})
+
+
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        comment = request.POST.get('comment')
+        messages.error(request, "Thank you for contacting us, we will contact you soon if needed!")
+        Message.objects.create(name=name, email=email, comment=comment)
+        subject = "ScholarShare"
+        message = f"Dear {name},\n\nThank you for contacting us! We have received your message and will get back to you as soon as possible.\n\nBest regards,\nTeamScrum"
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [email]
+        send_mail(subject, message, from_email, to_email, fail_silently=True)
+        return redirect('welcoming_page')
+    else:
+        return redirect('welcoming_page')

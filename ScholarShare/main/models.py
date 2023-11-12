@@ -47,3 +47,14 @@ class About(models.Model):
 
     class Meta:
         verbose_name_plural = 'About'
+
+
+
+class Message(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=100)
+    comment = models.TextField(max_length=300)
+
+
+    def __str__(self):
+        return f"From {self.name}"

@@ -64,7 +64,7 @@
           </li>
           <li class="nav-item">
             <button type="button" class="btn btn-light" id="nav-btn">
-                <a href="" class="text-decoration-none" style="color: black;"><b>Contact</b></a>
+                <a class="text-decoration-none" href="" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="color: black;"><b>Contact Us</b></a>
             </button>
           </li>
           <li class="nav-item">
@@ -81,6 +81,16 @@
       </div>
     </div>
 </nav>
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" id="msg">
+        <strong style="text-align: center;margin-left: 35%;"> {{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 <!-- Header end,main part-1 start -->
 <div class="container my-3">
     <div class="row" id="main-div1">
@@ -181,7 +191,7 @@
         <a class="nav-link text-light" aria-current="page" href="#" id="footer-item">Terms of use</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-light" href="#" id="footer-item">Contact us</a>
+        <a class="nav-link text-light" aria-current="page" href="" id="footer-item" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Contact Us</a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-light" href="{% url 'about' %}" id="footer-item">About</a>
@@ -194,4 +204,35 @@
     </div>
   </div>
 </nav>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Contact Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'contact' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <input type="text" class="form-control" name="name" id="recipient-name" required placeholder="Your Name">
+          </div>
+          <div class="mb-3">
+            <input type="email" class="form-control" name="email" id="recipient-name" required placeholder="Your Email">
+          </div>
+          <div class="mb-3">
+            <textarea class="form-control" id="message-text" name="comment" required placeholder="Your Message"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <input type="submit" class="btn btn-primary" name="submit" value="Send">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {%endblock%}
