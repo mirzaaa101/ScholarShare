@@ -140,7 +140,7 @@ def contact(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         comment = request.POST.get('comment')
-        messages.error(request, "Thank you for contacting us, we will contact you soon if needed!")
+        messages.error(request, "Thank you for contacting us, we will contact you soon if required!")
         Message.objects.create(name=name, email=email, comment=comment)
         subject = "ScholarShare"
         message = f"Dear {name},\n\nThank you for contacting us! We have received your message and will get back to you as soon as possible.\n\nBest regards,\nTeamScrum"
