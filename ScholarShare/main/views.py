@@ -7,7 +7,6 @@ from ScholarShare import settings
 from django.core.mail import send_mail,EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from .tokens import generate_token
-from django.urls import reverse
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -52,6 +51,7 @@ def register_user(request):
         username = request.POST['username']
         password = request.POST['password']
         full_name = request.POST['full_name']
+        bio = request.POST['bio']
         phone = request.POST['phone']
         profile_photo = request.FILES['profile_photo']
         uiuid = request.FILES['uiuid_photo']
@@ -65,17 +65,17 @@ def register_user(request):
             messages.error(request,"Please use 8 characters for your password!!")
             return redirect('register')
 
-
         user = User.objects.create_user(username, password=password, is_active = False)
         new_user = NewUser(
             usertype=usertype,
             username = username,
             password = password,
-            full_name=full_name,
+            full_name = full_name,
             phone=phone,
             profile_photo=profile_photo,
             uiuid=uiuid,
             nid=nid,
+            bio = bio,
         )
         new_user.save()
         current_site = get_current_site(request)
@@ -111,7 +111,7 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 messages.error(request, "You have been logged in successfully!")
-                return redirect('core:home')
+                return redirect('core_home')
             else:
                 messages.error(request, 'Sorry, your account is inactive. We will send you a confirmation email soon.')
                 return redirect('login')
@@ -121,10 +121,18 @@ def login_user(request):
     else:
         return render(request, 'login_user.html', {})
 
+def user_exists(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        username = request.user.username
+        try:
+            user = NewUser.objects.get(username=username)
+        except NewUser.DoesNotExist:
+            user = None
+            messages.error(request, "You have been logged out successfully!")
+            return redirect('welcoming_page')
+        return view_func(request, user=user, *args, **kwargs)
 
-
-def redirect_to_core(request, user):
-    return redirect('core:home')
+    return _wrapped_view
 
 def faqs(request):
     faqs = FAQ.objects.all()
@@ -150,3 +158,43 @@ def contact(request):
         return redirect('welcoming_page')
     else:
         return redirect('welcoming_page')
+
+
+# Please start writing from here for main functionality
+
+
+@user_exists
+def core_home(request, user):
+    if not request.user.is_authenticated:
+        logout(request)
+        return redirect('welcoming_page')
+
+    return render(request, 'core/home.html', {'user': user})
+
+
+
+@user_exists
+def core_user(request, user):
+    return render(request, 'core/user.html', {'user': user})
+
+
+def update_profile(request):
+    if request.method == 'POST':
+        new_bio = request.POST.get('bio')
+        new_profile_photo = request.FILES.get('profile_photo')
+
+        username = request.user.username
+        new_user = NewUser.objects.get(username=username)
+        new_user.bio = new_bio
+        new_user.profile_photo = new_profile_photo
+        new_user.save()
+
+        messages.error(request, 'Profile updated successfully!')
+        return redirect('core_user')
+    return render(request, 'core/user.html')
+
+
+def logout_user(request):
+    logout(request)
+    messages.error(request, "You have been logged out successfully!")
+    return redirect('welcoming_page')

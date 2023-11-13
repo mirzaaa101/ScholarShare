@@ -4,7 +4,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
 urlpatterns = [
     path('',views.welcoming_page, name='welcoming_page' ),
     path('contact/', views.contact, name='contact'),
@@ -14,7 +13,11 @@ urlpatterns = [
     path('logout',views.logout_user, name='logout' ),
     path('faqs',views.faqs, name='faqs' ),
     path('about',views.about, name='about' ),
-    path('redirect-to-core/', views.redirect_to_core, name='redirect_to_core'),
+    # use pattern like core_name if you are working for core folder
+    path('core/home/', views.core_home, name='core_home'),
+    path('core/user/', views.core_user, name='core_user'),
+    path('core/update_profile',views.update_profile, name='update_profile' ),
+    path('logout/', views.logout_user, name='logout'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

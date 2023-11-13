@@ -12,7 +12,8 @@ class NewUser(models.Model):
     uiuid = models.ImageField(upload_to='Files/uiuid_photos/')
     nid = models.ImageField(upload_to='Files/nid_photos/')
     confirmation_token = models.CharField(max_length=100, blank=True, null=True)
-    userid = models.CharField(max_length=20, blank=True, null=True)
+    userid = models.CharField(max_length=20, unique=True, primary_key=True)
+    bio = models.CharField(max_length=200, default="Welcome to my profile! I'm a passionate individual with diverse interests and talents. Join me on my journey and let's explore the world together.")
 
 
     def save(self, *args, **kwargs):
