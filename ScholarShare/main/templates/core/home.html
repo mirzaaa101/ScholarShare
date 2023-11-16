@@ -65,7 +65,7 @@
 {% if post.loan_post or post.donation_post%}
   <div class="card">
     <div class="card-header" style="background-color: transparent;">
-      <a href="" class="text-dark" style="text-decoration: none;">
+      <a href="{% url 'view_post' pk=post.pk %}?type={{post.userid.usertype}}" class="text-dark" style="text-decoration: none;">
           <strong>
               {% if post.userid.userid == user.userid %}
                   @You
@@ -78,7 +78,7 @@
   </div>
     <div class="card-body">
       <blockquote class="blockquote mb-0">
-        <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
+        <a href="{% url 'view_post' pk=post.pk %}?type={{post.userid.usertype}}" class="text-dark" style="text-decoration: none;" id="postlink">
           <p class="fw-normal fs-6">{{ post.loan_post|default:"" }}{{ post.donation_post|default:"" }}</p>
             <div class="image-container">
               {% if post.loan_postimage or post.donation_postimage%}
@@ -87,9 +87,7 @@
             </div>
             <p class="card-text">
               <small class="text-muted" style="margin-right: 80px;">Posted {{ post.time_since_creationt|default:"" }}{{ post.time_since_creation|default:"" }}</small>
-              <!-- <small class="text-muted" style="margin-right: 100px;">{{ post.loan_amount|default:"" }}{{ post.donation_amount|default:"" }}</small> -->
               <small class="text-muted" style="margin-right: 80px;">Amount required: {{ post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}</small>
-
               <small class="text-muted">Number of participants: 3</small> <br>
             </p>
         </a>
@@ -99,12 +97,7 @@
   {% endif %}
   {% endfor %}
 
-
-
-
-
-
-
+<!-- Create Post Form -->
   <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
     <div class="modal-dialog" id="post">
         <div class="modal-content">

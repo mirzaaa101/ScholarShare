@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import view_post
 
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
     path('core/update_profile',views.update_profile, name='update_profile' ),
     path('core/create_loan_post',views.create_loan_post, name='create_loan_post'),
     path('core/create_donation_post',views.create_donation_post, name='create_donation_post'),
+    path('core/view_post/<int:pk>/', views.view_post, name='view_post'),
     path('logout/', views.logout_user, name='logout'),
 ]
 

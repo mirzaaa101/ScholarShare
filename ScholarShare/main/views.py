@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -13,7 +13,6 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from itertools import chain
 from django.utils import timezone
-from datetime import timedelta
 
 
 
@@ -268,6 +267,37 @@ def create_donation_post(request, user):
             return redirect('core_home')
     else:
         return redirect('core_home')
+
+
+# def view_post(request, pk):
+#     loan_post = get_object_or_404(LoanRequest, pk=pk)
+#     user_type = loan_post.userid.usertype
+
+#     if user_type == 'Individual':
+#         return render(request, 'core/view_loan_post.html', {'loan_post': loan_post})
+#     else:
+#         donation_post = get_object_or_404(DonationRequest, pk=pk)
+#         return render(request, 'core/view_donation_post.html', {'donation_post': donation_post})
+
+
+def view_loan_post(request, template_name, post):
+    return redirect(request, template_name, {'post': post})
+
+
+def view_post(request, pk):
+    user_type = request.GET.get('type', '')
+    template_name = "#"
+    if user_type == 'Individual':
+        post = get_object_or_404(LoanRequest, pk=pk)
+        template_name = 'core/view_loan_post.html'
+
+    elif user_type == 'Club':
+        post = get_object_or_404(DonationRequest, pk=pk)
+        template_name = 'core/view_donation_post.html'
+    else:
+        return render(request, '404.html')
+    return render(request, template_name, {'post': post})
+
 
 
 def logout_user(request):
