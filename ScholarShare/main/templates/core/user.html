@@ -24,6 +24,12 @@
         background-color: black;
         border-color: black;
     }
+    .card{
+        width: 750px;
+        height: auto;
+        margin: 20px 0 0;
+        border-color: transparent;
+    }
 </style>
     <div id="profile">
         <div style="float: left;width: 80%;">
@@ -32,7 +38,7 @@
                 <p class="font-light">{{user.usertype}}</p>
             </p>
             <p class="font-monospace" style="width: 400px;">{{user.bio}}</p>
-            <p class="text-muted">14 post created</p>
+            <p class="text-muted"> post created</p>
         </div>
         <div style="float: right;width: 20%;">
             {% if user.profile_photo %}
@@ -47,13 +53,33 @@
         </div>
         <div id="currentPost" style="display: block;">
             <!-- Content for Current Post -->
-            <!-- This will be visible initially -->
-            <h4>Current post goes on...</h4>
+            <div class="card">
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
+                        <p class="fw-normal fs-6">Need a helping hand! 🤔 Struggling with [specific issue]? 🚑 Any advice or suggestions would be greatly appreciated! 🙏 Thanks in advance for your support! 💙 #SeekingHelp #CommunitySupport"</p>
+                        <div class="image-container">
+                            <img src="{% static 'welcome_page/loan.png' %}" alt="Image description">
+                        </div>
+                    </a>
+                  </blockquote>
+                </div>
+              </div>
         </div>
         <div id="archivePost" style="display: none;">
             <!-- Content for Archive Post -->
-            <!-- This will be hidden initially -->
-            <h4>Archive post goes on...</h4>
+            <div class="card">
+                <div class="card-body">
+                  <blockquote class="blockquote mb-0">
+                    <a href="" class="text-dark" style="text-decoration: none;">
+                        <p class="fw-normal fs-6">Need a helping hand! 🤔 Struggling with [specific issue]? 🚑 Any advice or suggestions would be greatly appreciated! 🙏 Thanks in advance for your support! 💙 #SeekingHelp #CommunitySupport"</p>
+                        <div class="image-container">
+                            <img src="{% static 'welcome_page/earn.png' %}" alt="Image description">
+                        </div>
+                    </a>
+                  </blockquote>
+                </div>
+              </div>
         </div>
         <script>
             function showCurrent() {

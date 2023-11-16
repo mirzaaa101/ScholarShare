@@ -59,3 +59,29 @@ class Message(models.Model):
 
     def __str__(self):
         return f"From {self.name}"
+
+
+class LoanRequest(models.Model):
+    loan_postid = models.AutoField(primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    loan_post = models.CharField(max_length=500)
+    loan_amount = models.FloatField(default=0)
+    loan_postimage = models.ImageField(upload_to='Files/LoanPost/')
+    isactive = models.BooleanField(default=True)
+    userid = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"LoanPost {self.loan_postid} by {self.userid}"
+
+
+class DonationRequest(models.Model):
+    donation_postid = models.AutoField(primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    donation_post = models.CharField(max_length=500)
+    donation_amount = models.FloatField(default=0)
+    donation_postimage = models.ImageField(upload_to='Files/DonationPost/')
+    isactive = models.BooleanField(default=True)
+    userid = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"DonationPost {self.donation_postid} by {self.userid}"

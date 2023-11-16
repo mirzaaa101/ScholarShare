@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from.models import NewUser, FAQ, About, Message
+from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest
 from ScholarShare import settings
 from django.core.mail import send_mail,EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
@@ -11,6 +11,10 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
+from itertools import chain
+from django.utils import timezone
+from datetime import timedelta
+
 
 
 def welcoming_page(request):
@@ -165,17 +169,41 @@ def contact(request):
 
 @user_exists
 def core_home(request, user):
+    loan_post = LoanRequest.objects.all()
+    donation_post = DonationRequest.objects.all()
+
+    # Combine loan_post and donation_post into a single list
+    all_posts = sorted(
+        chain(loan_post, donation_post),
+        key=lambda post: post.created_at,
+        reverse=True
+    )
+
+    for post in all_posts:
+        time_difference = timezone.now() - post.created_at
+        minutes_since_creation = int(time_difference.total_seconds() / 60)
+
+        if minutes_since_creation < 60:
+            post.time_since_creation = f"{minutes_since_creation} minutes ago"
+        elif minutes_since_creation < 1440:
+            hours_since_creation = minutes_since_creation // 60
+            post.time_since_creation = f"{hours_since_creation} hours ago"
+        else:
+            days_since_creation = minutes_since_creation // 1440
+            post.time_since_creation = f"{days_since_creation} days ago"
+
     if not request.user.is_authenticated:
         logout(request)
         return redirect('welcoming_page')
 
-    return render(request, 'core/home.html', {'user': user})
-
+    return render(request, 'core/home.html', {'user': user, 'all_posts': all_posts})
 
 
 @user_exists
 def core_user(request, user):
-    return render(request, 'core/user.html', {'user': user})
+    loan_post = LoanRequest.objects.all()
+    donation_post = DonationRequest.objects.all()
+    return render(request, 'core/user.html', {'user': user, 'loan_post': loan_post, 'donation_post': donation_post})
 
 
 def update_profile(request):
@@ -193,6 +221,53 @@ def update_profile(request):
         messages.error(request, 'Profile updated successfully!')
         return redirect('core_user')
     return render(request, 'core/user.html')
+
+
+@user_exists
+def create_loan_post(request, user):
+    if request.method == 'POST':
+        post_content = request.POST.get('post')
+        amount = request.POST.get('amount')
+        post_image = request.FILES.get('post_image')
+
+        if post_content and amount:
+            loan_post = LoanRequest.objects.create(
+                loan_post=post_content,
+                loan_amount=amount,
+                loan_postimage=post_image,
+                userid=user
+            )
+            loan_post.save()
+            messages.error(request, "Loan post created successfully!")
+            return redirect('core_home')
+        else:
+            messages.error(request, "Error creating loan post. Please fill in all required fields.")
+            return redirect('core_home')
+
+    return redirect('core_home')
+
+
+@user_exists
+def create_donation_post(request, user):
+    if request.method == 'POST':
+        post_content = request.POST.get('post')
+        amount = request.POST.get('amount')
+        post_image = request.FILES.get('post_image')
+        if post_content and amount:
+            donation_post = DonationRequest.objects.create(
+                donation_post=post_content,
+                donation_amount=amount,
+                donation_postimage=post_image,
+                userid=user
+            )
+            donation_post.save()
+            messages.error(request, "Donation post created successfully!")
+            return redirect('core_home')
+        else:
+            messages.error(request, "Error creating donation post. Please fill in all required fields.")
+            return redirect('core_home')
+    else:
+        return redirect('core_home')
 
 
 def logout_user(request):

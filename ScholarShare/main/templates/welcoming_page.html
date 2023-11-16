@@ -41,7 +41,7 @@
 }
 </style>
 <!-- Header start -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light my-2">
+<nav class="navbar navbar-expand-lg navbar-light bg-transparent my-2">
     <div class="container-fluid ms-5 me-5">
       <img src="{% static 'welcome_page/demo_logo.png' %}" alt="demo_logo" width="46" height="40">
       <a class="navbar-brand" href="#"><b>ScholarShare</b></a>
@@ -53,27 +53,27 @@
             </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-light" id="nav-btn">
+            <button type="button" class="btn btn-transparent" id="nav-btn">
                 <a href="{%url 'register'%}" class="text-decoration-none" style="color: black;"><b>Sign Up</b></a>
             </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-light" id="nav-btn" >
+            <button type="button" class="btn btn-transparent" id="nav-btn" >
                 <a href="{%url 'login'%}" class="text-decoration-none" style="color: black;"><b>Log In</b></a>
             </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-light" id="nav-btn">
+            <button type="button" class="btn btn-transparent" id="nav-btn">
                 <a class="text-decoration-none" href="" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" style="color: black;"><b>Contact Us</b></a>
             </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-light" id="nav-btn">
+            <button type="button" class="btn btn-transparent" id="nav-btn">
                 <a href="{%url 'faqs'%}" class="text-decoration-none" style="color: black;"><b>FAQs</b></a>
             </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-light" id="nav-btn">
+            <button type="button" class="btn btn-transparent" id="nav-btn">
                 <a href="{% url 'about' %}" class="text-decoration-none" style="color: black;"><b>About</b></a>
             </button>
           </li>
@@ -184,8 +184,14 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <img src="{% static 'welcome_page/demo_logo.png' %}" alt="" width="30" height="24" class="d-inline-block align-text-top">
-      &#169 TeamScrum 2023
-    </a>
+      <span id="copyright">&copy; TeamScrum 2023-</span>
+  </a>
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          var currentYear = new Date().getFullYear();
+          document.getElementById('copyright').innerHTML += ' ' + currentYear;
+      });
+  </script>
     <ul class="nav justify-content-center">
       <li class="nav-item">
         <a class="nav-link text-light" aria-current="page" href="#" id="footer-item">Terms of use</a>

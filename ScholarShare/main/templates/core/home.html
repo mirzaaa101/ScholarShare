@@ -2,5 +2,142 @@
 {% load static %}
 {% block title %}Home{% endblock %}
 {% block content %}
- <h1>Hello From Home</h1>
+<style>
+    .card{
+        width: 800px;
+        height: auto;
+        margin: 30px 40px 0 300px;
+        border-color: transparent;
+    }
+    #postlink:hover {
+    text-decoration: dotted;
+    }
+    #post-btn{
+      margin: 0 0 0 40%;
+    }
+    #post-input-container {
+    display: flex;
+    align-items: center;
+    width: 800px;
+    margin: 10px 20px 0 300px;
+    border-color: transparent;
+   }
+
+    #profile-image {
+        margin-right: 10px;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+    }
+
+    #post-input {
+        flex: 1;
+        border: none;
+    }
+
+    .line{
+        height: 3px;
+        background-color: black;
+        border-color: black;
+        width: 800px;
+        margin: 10px 20px 0 300px;
+    }
+    .post{
+      width: 700px;
+    }
+    .modal-content{
+      width: 600px;
+      height: 300px;
+      margin-right: 20px;
+      height: fit-content;
+      border-radius: 10px;
+      border-color: transparent;
+    }
+</style>
+<div id="post-input-container">
+  <img src="{{ user.profile_photo.url }}" id="profile-image" alt="Profile Image">
+  <input type="text" class="form-control" placeholder="Start posting" aria-label="Username" aria-describedby="basic-addon1" id="post-input" data-bs-toggle="modal" data-bs-target="#postModal" data-bs-whatever="@fat">
+</div>
+<hr class="line">
+
+
+{% for post in all_posts %}
+{% if post.loan_post or post.donation_post%}
+  <div class="card">
+    <div class="card-header" style="background-color: transparent;">
+      <a href="" class="text-dark" style="text-decoration: none;">
+          <strong>
+              {% if post.userid.userid == user.userid %}
+                  @You
+              {% else %}
+                  @{{ post.userid.userid }}
+                  <p class="text-muted" style="display: inline;">-{{ post.userid.usertype }}</p>
+              {% endif %}
+          </strong>
+      </a>
+  </div>
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
+          <p class="fw-normal fs-6">{{ post.loan_post|default:"" }}{{ post.donation_post|default:"" }}</p>
+            <div class="image-container">
+              {% if post.loan_postimage or post.donation_postimage%}
+              <img src="{{ post.loan_postimage.url|default:'' }}{{ post.donation_postimage.url|default:'' }}" alt="Image description" style="height: auto;">
+              {% endif %}
+            </div>
+            <p class="card-text">
+              <small class="text-muted" style="margin-right: 80px;">Posted {{ post.time_since_creationt|default:"" }}{{ post.time_since_creation|default:"" }}</small>
+              <!-- <small class="text-muted" style="margin-right: 100px;">{{ post.loan_amount|default:"" }}{{ post.donation_amount|default:"" }}</small> -->
+              <small class="text-muted" style="margin-right: 80px;">Amount required: {{ post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}</small>
+
+              <small class="text-muted">Number of participants: 3</small> <br>
+            </p>
+        </a>
+      </blockquote>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+
+
+
+
+
+
+  <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+    <div class="modal-dialog" id="post">
+        <div class="modal-content">
+            <div class="modal-header">
+                {% if user.usertype == 'Individual' %}
+                <h5 class="modal-title" id="exampleModalLabel">Create a loan post</h5>
+                {% elif user.usertype == 'Club' %}
+                <h5 class="modal-title" id="exampleModalLabel">Create a donation post</h5>
+                {% endif %}
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if user.usertype == 'Individual' %}
+                <form method="POST" action="{% url 'create_loan_post' %}" enctype="multipart/form-data">
+                {% elif user.usertype == 'Club' %}
+                <form method="POST" action="{% url 'create_donation_post' %}" enctype="multipart/form-data">
+                {% endif %}
+                {% csrf_token %}
+                    <div class="mb-3">
+                        <textarea class="form-control" id="message-text" placeholder="write a post" name="post"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" id="amt-img" placeholder="amount" name="amount" required>
+                        <input type="file" class="form-control" id="amt-img" name="post_image" accept="image/jpeg, image/png">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Post" name="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
