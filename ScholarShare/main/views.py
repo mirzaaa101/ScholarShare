@@ -311,6 +311,21 @@ def delete_loan_post(request, pk):
     return redirect('core_home')
 
 
+def update_loan_post(request, pk):
+    loan_post_reuest = get_object_or_404(LoanRequest, pk=pk)
+
+    if request.method == 'POST' and not loan_post_reuest.transaction_happen:
+        new_post = request.POST.get('loan_post')
+        new_amount = request.POST.get('loan_amount')
+        loan_post_reuest.loan_post = new_post
+        loan_post_reuest.loan_amount = new_amount
+        loan_post_reuest.save()
+
+        messages.error(request, 'Post updated successfully!')
+        return redirect('core_home')
+    else:
+     messages.error(request, "You don't have permission to update this post.")
+     return render(request, 'core/home.html')
 
 
 

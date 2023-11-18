@@ -33,7 +33,7 @@
         <p class="fw-normal fs-2">{{post.loan_post}}</p>
         <hr>
         <div>
-            <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount required:3000&#2547;</p>
+            <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount required:{{post.loan_amount}}&#2547;</p>
             <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received:1000&#2547;</p>
             <p class="fw-bolder fs-6" id="text-dark">
                 <a href="" class="text-dark" style="text-decoration: dashed;">Send Loan</a>
@@ -79,14 +79,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="youModalLabel">Delete this post</h5>
+                <h5 class="modal-title" id="youModalLabel">Edit this post</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="text-align: left;">
                 <p class="fw-bold">You can only delete or update if no transection occurd regarding this post.</p>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="btn btn-primary" name="update" value="Update" data-bs-toggle="modal" data-bs-target="#loanUpdateModal" data-bs-whatever="@mdo">
+                <input type="submit" class="btn btn-warning" data-bs-dismiss="modal" name="update" value="Update" data-bs-toggle="modal" data-bs-target="#loanUpdateModal" data-bs-whatever="@mdo">
                 <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete" data-bs-toggle="modal" data-bs-target="#loanDeleteModal" data-bs-whatever="@mdo">
             </div>
         </div>
@@ -98,25 +98,24 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Update Form</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form>
+          <form method="POST" action="{% url 'update_loan_post' pk=post.pk %}">
+            {% csrf_token %}
             <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">Recipient:</label>
-              <input type="text" class="form-control" id="recipient-name">
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">Message:</label>
-              <textarea class="form-control" id="message-text"></textarea>
-            </div>
-          </form>
+              <input type="text" class="form-control" name="loan_post" value="{{ post.loan_post }}">
+          </div>
+          <div class="mb-3">
+              <input type="number" class="form-control" name="loan_amount" value="{{post.loan_amount}}">
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Send message</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          <input type="submit" value="Confrim" class="btn btn-primary">
         </div>
+      </form>
       </div>
     </div>
   </div>

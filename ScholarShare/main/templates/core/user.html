@@ -83,16 +83,43 @@
                     </a>
                 </blockquote>
                 <p class="card-text">
-                    <small class="text-muted" style="margin-right: 180px;">Amount required: {{
-                        post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
+                    <small class="text-muted" style="margin-right: 180px;">
+                        Amount required: {{post.loan_amount}}&#2547;
+                    </small>
                     <small class="text-muted">Number of participants: 3</small> <br>
                 </p>
             </div>
             <hr>
         </div>
-
-
-        <!-- Delete Laon Modal -->
+        <!-- Update Modal Form -->
+        <div class="modal fade" id="loanUpdateModal" tabindex="-1" aria-labelledby="loanUpdateModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Form</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'update_loan_post' pk=post.loan_postid %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <input type="text" class="form-control" name="loan_post" value="{{ post.loan_post }}">
+                            </div>
+                            <div class="mb-3">
+                                <input type="number" class="form-control" name="loan_amount"
+                                    value="{{post.loan_amount}}">
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" value="Confrim" class="btn btn-primary">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Update Modal Form End-->
+        <!-- Delete Laon Modal Start -->
         <div class="modal fade" id="loanDeleteModal" tabindex="-1" aria-labelledby="loanDeleteModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -110,6 +137,7 @@
                 </div>
             </div>
         </div>
+        <!-- Delete Laon Modal End -->
 
 
 
@@ -135,8 +163,9 @@
                     </a>
                 </blockquote>
                 <p class="card-text">
-                    <small class="text-muted" style="margin-right: 180px;">Amount required: {{
-                        post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
+                    <small class="text-muted" style="margin-right: 180px;">
+                        Amount required:{{ post.donation_amount|default:""|add:0 }}&#2547;
+                    </small>
                     <small class="text-muted">Number of participants: 3</small> <br>
                 </p>
             </div>
@@ -166,8 +195,9 @@
                     </a>
                 </blockquote>
                 <p class="card-text">
-                    <small class="text-muted" style="margin-right: 180px;">Amount required: {{
-                        post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
+                    <small class="text-muted" style="margin-right: 180px;">
+                        Amount required: {{post.loan_amount}}&#2547;
+                    </small>
                     <small class="text-muted">Number of participants: 3</small> <br>
                 </p>
             </div>
@@ -194,8 +224,9 @@
                     </a>
                 </blockquote>
                 <p class="card-text">
-                    <small class="text-muted" style="margin-right: 180px;">Amount required: {{
-                        post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
+                    <small class="text-muted" style="margin-right: 180px;">
+                        Amount required:{{ post.donation_amount|default:""|add:0 }}&#2547;
+                    </small>
                     <small class="text-muted">Number of participants: 3</small> <br>
                 </p>
             </div>
@@ -216,6 +247,19 @@
                 document.getElementById('currentBtn').classList.remove('btn-primary');
                 document.getElementById('archiveBtn').classList.add('btn-primary');
             }
+            document.addEventListener('DOMContentLoaded', function () {
+        // Get the Update button inside the youModalLoan modal
+        var updateButton = document.querySelector('#youModalLoan .modal-footer .btn-primary');
+
+        // Add a click event listener to the Update button
+        updateButton.addEventListener('click', function () {
+            // Find the youModalLoan modal using its ID
+            var youModalLoan = new bootstrap.Modal(document.getElementById('youModalLoan'));
+
+            // Close the youModalLoan modal
+            youModalLoan.hide();
+        });
+    });
         </script>
     </div>
 
@@ -224,7 +268,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="youModalLabel">Delete this post</h5>
+                    <h5 class="modal-title" id="youModalLabel">Edit this post</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="text-align: left;">
@@ -232,10 +276,8 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" name="update" value="Update" data-bs-toggle="modal"
-                        data-bs-target="#loanUpdateModal" data-bs-whatever="@mdo">
-                    <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete"
-                        data-bs-toggle="modal" data-bs-target="#loanDeleteModal" data-bs-whatever="@mdo">
+                    <input type="submit" class="btn btn-warning" data-bs-dismiss="modal" value="Update" data-bs-toggle="modal" data-bs-target="#loanUpdateModal">
+                    <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" value="Delete" data-bs-toggle="modal" data-bs-target="#loanDeleteModal">
                 </div>
             </div>
         </div>
@@ -253,36 +295,8 @@
                     <p class="fw-bold">You can only delete or update if no transection occurd regarding this post.</p>
                 </div>
                 <div class="modal-footer">
-                    <!-- <input type="submit" class="btn btn-primary" name="update" value="Update" data-bs-toggle="modal" data-bs-target="#loanUpdateModal" data-bs-whatever="@mdo">
-                <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete" data-bs-toggle="modal" data-bs-target="#loanDeleteModal" data-bs-whatever="@mdo"> -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Update Loan Modal Form -->
-    <div class="modal fade" id="loanUpdateModal" tabindex="-1" aria-labelledby="loanUpdateModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="recipient-name" class="col-form-label">Recipient:</label>
-                            <input type="text" class="form-control" id="recipient-name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Message:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send message</button>
+                    <input type="submit" class="btn btn-warning" name="update" value="Update" data-bs-toggle="modal" data-bs-target="#donationUpdateModal" data-bs-whatever="@mdo">
+                    <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete" data-bs-toggle="modal" data-bs-target="#donationDeleteModal" data-bs-whatever="@mdo">
                 </div>
             </div>
         </div>

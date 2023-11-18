@@ -14,7 +14,7 @@ urlpatterns = [
     path('logout',views.logout_user, name='logout' ),
     path('faqs',views.faqs, name='faqs' ),
     path('about',views.about, name='about' ),
-    # use pattern like core_name if you are working for core folder
+    # Core folder url pattern starts from here
     path('core/home/', views.core_home, name='core_home'),
     path('core/user/', views.core_user, name='core_user'),
     path('core/update_profile',views.update_profile, name='update_profile' ),
@@ -24,6 +24,7 @@ urlpatterns = [
     path('core/view_laon_post/<int:pk>/', views.view_loan_post, name='view_loan_post'),
     path('core/view_donation_post/<int:pk>/', views.view_donation_post, name='view_donation_post'),
     path('delete_loan_post/<int:pk>/', views.delete_loan_post, name='delete_loan_post'),
+    path('update_loan_post/<int:pk>/', views.update_loan_post, name='update_loan_post'),
     path('logout/', views.logout_user, name='logout'),
 ]
 
