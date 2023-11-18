@@ -4,94 +4,143 @@
 {% block content %}
 
 <style>
-    #view{
-        max-width: 800px;
-        max-height: 400px;
-        margin:  20px 0 0 24%;
-        border: black;
-        border-radius: 10px;
-    }
-    #text-dark:hover{
-        text-decoration: underline;
-        color: #0000EE;
-    }
+  #view {
+    max-width: 800px;
+    max-height: 400px;
+    margin: 20px 0 0 24%;
+    border: black;
+    border-radius: 10px;
+  }
+
+  #text-dark:hover {
+    text-decoration: underline;
+    color: #0000EE;
+  }
 </style>
 
 <div class="card mb-3" id="view">
-    {% if post.donation_postimage %}
-    <img src="{{ post.donation_postimage.url }}" class="card-img-top" alt="..."
-        style="height: 300px;max-width: 500px;"><br>
-    {% endif %}
-    <div class="card-body">
-        <p class="fw-bold fs-4">
-            {% if post.userid.userid == user.userid %}
-            <a class="text-dark" style="text-decoration: none;" href="" data-bs-toggle="modal" data-bs-target="#youModal">@you</a>
-            {% else %}
-            <a class="text-dark" style="text-decoration: none;" href="" data-bs-toggle="modal" data-bs-target="#authorModal">@{{post.userid.userid}}</a>
-            {% endif %}
-        </p>
-        <p class="fw-normal fs-2">{{post.donation_post}}</p>
-        <hr>
-        <div>
-            <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount required:3000&#2547;</p>
-            <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received:1000&#2547;</p>
-            <p class="fw-bolder fs-6">
-                <a href="" class="text-dark" style="text-decoration: dashed;">Donate</a>
-            </p>
-        </div>
+  {% if post.donation_postimage %}
+  <img src="{{ post.donation_postimage.url }}" class="card-img-top" alt="..."
+    style="height: 300px;max-width: 500px;"><br>
+  {% endif %}
+  <div class="card-body">
+    <p class="fw-bold fs-4">
+      {% if post.userid.userid == user.userid %}
+      @you
+      <a class="text-dark" style="text-decoration: none;" href="" data-bs-toggle="modal" data-bs-target="#youModal">
+        <i class="fa-solid fa-pen-to-square" style="margin-left: 500px;font-size: 15px;"> <small>Edit</small></i>
+      </a>
+      {% else %}
+      <a class="text-dark" style="text-decoration: none;" href="" data-bs-toggle="modal" data-bs-target="#authorModal">
+        @{{ post.userid.userid }}
+      </a>
+      <i class="fa-solid fa-pen-to-square" style="margin-left: 500px;font-size: 15px;"> <small>Report</small></i>
+      {% endif %}
+    </p>
+    <p class="fw-normal fs-2">{{post.donation_post}}</p>
+    <hr>
+    <div>
+      <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount required:{{post.donation_amount}}&#2547;
+      </p>
+      <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received:1000&#2547;</p>
+      <p class="fw-bolder fs-6">
+        <a href="" class="text-dark" style="text-decoration: dashed;">Donate</a>
+      </p>
     </div>
+  </div>
 </div>
 
 
 
-  <!-- Modal -->
+<!-- Modal -->
 <div class="modal fade" id="authorModal" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="authorModalLabel">About this user</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="text-align: left;">
-                <div class="user-info">
-                    <p class="font-monospace">User Type: <strong>{{ post.userid.usertype }}</strong></p>
-                    <p class="font-monospace">Biography: <strong>{{ post.userid.bio }}</strong></p>
-                </div>
-
-                <div class="post-info">
-                    <hr>
-                    <p class="font-monospace"><strong>Donation posts:</strong> 3 posts</p>
-                    <p class="font-monospace"><strong>Total donation received:</strong> 3000 &#2547;</p>
-                    <p class="font-monospace"><strong>Total donation given:</strong> 3000 &#2547;</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">X</button>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="authorModalLabel">About this user</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="text-align: left;">
+        <div class="user-info">
+          <p class="font-monospace">User Type: <strong>{{ post.userid.usertype }}</strong></p>
+          <p class="font-monospace">Biography: <strong>{{ post.userid.bio }}</strong></p>
         </div>
+
+        <div class="post-info">
+          <hr>
+          <p class="font-monospace"><strong>Donation posts:</strong> 3 posts</p>
+          <p class="font-monospace"><strong>Total donation received:</strong> 3000 &#2547;</p>
+          <p class="font-monospace"><strong>Total donation given:</strong> 3000 &#2547;</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">X</button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Logged User Modal -->
 <div class="modal fade" id="youModal" tabindex="-1" aria-labelledby="youModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="youModalLabel">Delete this post</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="text-align: left;">
-                <p class="fw-bold">You can only delete or update if no transection occurd regarding this post.</p>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" class="btn btn-primary" name="update" value="Update">
-                <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete">
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="youModalLabel">Edit this post</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="text-align: left;">
+        <p class="fw-bold">You can only delete or update if no transection occurd regarding this post.</p>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" class="btn btn-warning" data-bs-dismiss="modal" name="update" value="Update"
+          data-bs-toggle="modal" data-bs-target="#donationUpdateModal" data-bs-whatever="@mdo">
+        <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete"
+          data-bs-toggle="modal" data-bs-target="#donationDeleteModal" data-bs-whatever="@mdo">
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- Update Modal Form -->
+<div class="modal fade" id="donationUpdateModal" tabindex="-1" aria-labelledby="donationUpdateModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'update_donation_post' pk=post.pk %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <input type="text" class="form-control" name="donation_post" value="{{ post.donation_post }}">
+          </div>
+          <div class="mb-3">
+            <input type="number" class="form-control" name="donation_amount" value="{{post.donation_amount}}">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        <input type="submit" value="Confrim" class="btn btn-primary">
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="donationDeleteModal" tabindex="-1" aria-labelledby="donationDeleteModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this post?</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+        <a href="{% url 'delete_donation_post' pk=post.pk %}" class="btn btn-primary">Yes</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
-
-
-

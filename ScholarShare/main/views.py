@@ -308,7 +308,7 @@ def delete_loan_post(request, pk):
     else:
         messages.error(request, "You don't have permission to delete this post.")
 
-    return redirect('core_home')
+    return redirect('core_user')
 
 
 def update_loan_post(request, pk):
@@ -322,13 +322,39 @@ def update_loan_post(request, pk):
         loan_post_reuest.save()
 
         messages.error(request, 'Post updated successfully!')
-        return redirect('core_home')
+        return redirect('core_user')
     else:
      messages.error(request, "You don't have permission to update this post.")
      return render(request, 'core/home.html')
 
 
+def delete_donation_post(request, pk):
+    donation_post = get_object_or_404(DonationRequest, pk=pk)
 
+    if not donation_post.transaction_happen:
+        donation_post.delete()
+        messages.error(request, "Post deleted successfully.")
+    else:
+        messages.error(request, "You don't have permission to delete this post.")
+
+    return redirect('core_user')
+
+
+def update_donation_post(request, pk):
+    donation_post_reuest = get_object_or_404(DonationRequest, pk=pk)
+
+    if request.method == 'POST' and not donation_post_reuest.transaction_happen:
+        new_post = request.POST.get('donation_post')
+        new_amount = request.POST.get('donation_amount')
+        donation_post_reuest.donation_post = new_post
+        donation_post_reuest.donation_amount = new_amount
+        donation_post_reuest.save()
+
+        messages.error(request, 'Post updated successfully!')
+        return redirect('core_user')
+    else:
+     messages.error(request, "You don't have permission to update this post.")
+     return render(request, 'core/core_user.html')
 
 def logout_user(request):
     logout(request)
