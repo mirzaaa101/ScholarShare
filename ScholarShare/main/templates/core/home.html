@@ -82,12 +82,12 @@
           <p class="fw-normal fs-6">{{ post.loan_post|default:"" }}{{ post.donation_post|default:"" }}</p>
             <div class="image-container">
               {% if post.loan_postimage or post.donation_postimage%}
-              <img src="{{ post.loan_postimage.url|default:'' }}{{ post.donation_postimage.url|default:'' }}" alt="Image description" style="height: auto;">
+              <img src="{{ post.loan_postimage.url|default:'' }}{{ post.donation_postimage.url|default:'' }}" alt="Image description" style="max-height: 400px;max-width: 800px;border-color: transparent;">
               {% endif %}
             </div>
             <p class="card-text">
               <small class="text-muted" style="margin-right: 80px;">Posted {{ post.time_since_creationt|default:"" }}{{ post.time_since_creation|default:"" }}</small>
-              <small class="text-muted" style="margin-right: 80px;">Amount required: {{ post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}</small>
+              <small class="text-muted" style="margin-right: 80px;">Amount required: {{ post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
               <small class="text-muted">Number of participants: 3</small> <br>
             </p>
         </a>

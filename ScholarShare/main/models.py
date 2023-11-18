@@ -69,6 +69,7 @@ class LoanRequest(models.Model):
     loan_postimage = models.ImageField(upload_to='Files/LoanPost/')
     isactive = models.BooleanField(default=True)
     userid = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+    transaction_happen = models.BooleanField(default=False)
 
     def __str__(self):
         return f"LoanPost {self.loan_postid} by {self.userid}"
@@ -82,6 +83,7 @@ class DonationRequest(models.Model):
     donation_postimage = models.ImageField(upload_to='Files/DonationPost/')
     isactive = models.BooleanField(default=True)
     userid = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+    transaction_happen = models.BooleanField(default=False)
 
     def __str__(self):
         return f"DonationPost {self.donation_postid} by {self.userid}"

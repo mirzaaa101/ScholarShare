@@ -30,7 +30,7 @@
     .card {
         width: 750px;
         height: auto;
-        margin: 20px 0 0;
+        margin: 0 0 0 0;
         border-color: transparent;
     }
 </style>
@@ -65,105 +65,226 @@
     <div id="currentPost" style="display: block;">
         <!-- Content for Current Post -->
         {% if loan_post %}
-            {% for post in loan_post %}
-                {% if post.isactive and user.usertype == 'Individual' and post.userid == user %}
-                    <!-- Content for Individual Loan Post -->
-                    <div class="card">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
-                                    <p class="fw-normal fs-6">{{ post.loan_post }}</p>
-                                    <div class="image-container">
-                                        {% if post.loan_postimage %}
-                                            <img src="{{ post.loan_postimage.url }}" alt="Image description">
-                                        {% endif %}
-                                    </div>
-                                </a>
-                            </blockquote>
+        {% for post in loan_post %}
+        {% if post.isactive and user.usertype == 'Individual' and post.userid == user %}
+        <!-- Content for Individual Loan Post -->
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <a href="" class="text-dark" style="text-decoration: none;" id="postlink" data-bs-toggle="modal"
+                        data-bs-target="#youModalLoan">
+                        <p class="fw-normal fs-6">{{ post.loan_post }}</p>
+                        <div class="image-container">
+                            {% if post.loan_postimage %}
+                            <img src="{{ post.loan_postimage.url }}" alt="Image description"
+                                style="height: 400px;max-width: 800px;">
+                            {% endif %}
                         </div>
+                    </a>
+                </blockquote>
+                <p class="card-text">
+                    <small class="text-muted" style="margin-right: 180px;">Amount required: {{
+                        post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
+                    <small class="text-muted">Number of participants: 3</small> <br>
+                </p>
+            </div>
+            <hr>
+        </div>
+
+
+        <!-- Delete Laon Modal -->
+        <div class="modal fade" id="loanDeleteModal" tabindex="-1" aria-labelledby="loanDeleteModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this post?</h5>
                     </div>
-                {% endif %}
-            {% endfor %}
+                    <form>
+                        <div class="mb-3">
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                        <a href="{% url 'delete_loan_post' pk=post.loan_postid %}" class="btn btn-primary">Yes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        {% endif %}
+        {% endfor %}
         {% endif %}
         {% if donation_post %}
-            {% for post in donation_post %}
-                {% if post.isactive and user.usertype == 'Club' and post.userid == user %}
-                    <!-- Content for Club Donation Post -->
-                    <div class="card">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
-                                    <p class="fw-normal fs-6">{{ post.donation_post }}</p>
-                                    <div class="image-container">
-                                        {% if post.donation_postimage %}
-                                            <img src="{{ post.donation_postimage.url }}" alt="Image description">
-                                        {% endif %}
-                                    </div>
-                                </a>
-                            </blockquote>
+        {% for post in donation_post %}
+        {% if post.isactive and user.usertype == 'Club' and post.userid == user %}
+        <!-- Content for Club Donation Post -->
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <a href="" class="text-dark" style="text-decoration: none;" id="postlink" data-bs-toggle="modal"
+                        data-bs-target="#youModalDonation">
+                        <p class="fw-normal fs-6">{{ post.donation_post }}</p>
+                        <div class="image-container">
+                            {% if post.donation_postimage %}
+                            <img src="{{ post.donation_postimage.url }}" alt="Image description"
+                                style="height: 400px;max-width: 800px;">
+                            {% endif %}
                         </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+                    </a>
+                </blockquote>
+                <p class="card-text">
+                    <small class="text-muted" style="margin-right: 180px;">Amount required: {{
+                        post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
+                    <small class="text-muted">Number of participants: 3</small> <br>
+                </p>
+            </div>
+            <hr>
+        </div>
+        {% endif %}
+        {% endfor %}
         {% endif %}
     </div>
     <div id="archivePost" style="display: none;">
         <!-- Content for Archive Post -->
         {% if loan_post %}
-            {% for post in loan_post %}
-                {% if not post.isactive and user.usertype == 'Individual' and post.userid == user %}
-                    <!-- Content for Individual Loan Post -->
-                    <div class="card">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
-                                    <p class="fw-normal fs-6">{{ post.loan_post }}</p>
-                                    <div class="image-container">
-                                        {% if post.loan_postimage %}
-                                            <img src="{{ post.loan_postimage.url }}" alt="Image description">
-                                        {% endif %}
-                                    </div>
-                                </a>
-                            </blockquote>
+        {% for post in loan_post %}
+        {% if not post.isactive and user.usertype == 'Individual' and post.userid == user %}
+        <!-- Content for Individual Loan Post -->
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
+                        <p class="fw-normal fs-6">{{ post.loan_post }}</p>
+                        <div class="image-container">
+                            {% if post.loan_postimage %}
+                            <img src="{{ post.loan_postimage.url }}" alt="Image description"
+                                style="height: 400px;max-width: 800px;">
+                            {% endif %}
                         </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+                    </a>
+                </blockquote>
+                <p class="card-text">
+                    <small class="text-muted" style="margin-right: 180px;">Amount required: {{
+                        post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
+                    <small class="text-muted">Number of participants: 3</small> <br>
+                </p>
+            </div>
+            <hr>
+        </div>
+        {% endif %}
+        {% endfor %}
         {% endif %}
         {% if donation_post %}
-            {% for post in donation_post %}
-                {% if not post.isactive and user.usertype == 'Club' and post.userid == user %}
-                    <!-- Content for Club Donation Post -->
-                    <div class="card">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
-                                    <p class="fw-normal fs-6">{{ post.donation_post }}</p>
-                                    <div class="image-container">
-                                        {% if post.donation_postimage %}
-                                            <img src="{{ post.donation_postimage.url }}" alt="Image description">
-                                        {% endif %}
-                                    </div>
-                                </a>
-                            </blockquote>
+        {% for post in donation_post %}
+        {% if not post.isactive and user.usertype == 'Club' and post.userid == user %}
+        <!-- Content for Club Donation Post -->
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <a href="" class="text-dark" style="text-decoration: none;" id="postlink">
+                        <p class="fw-normal fs-6">{{ post.donation_post }}</p>
+                        <div class="image-container">
+                            {% if post.donation_postimage %}
+                            <img src="{{ post.donation_postimage.url }}" alt="Image description"
+                                style="height: 400px;max-width: 800px;">
+                            {% endif %}
                         </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+                    </a>
+                </blockquote>
+                <p class="card-text">
+                    <small class="text-muted" style="margin-right: 180px;">Amount required: {{
+                        post.loan_amount|default:""|add:0 }}{{ post.donation_amount|default:""|add:0 }}&#2547;</small>
+                    <small class="text-muted">Number of participants: 3</small> <br>
+                </p>
+            </div>
+        </div>
         {% endif %}
-    <script>
-        function showCurrent() {
-            document.getElementById('currentPost').style.display = 'block';
-            document.getElementById('archivePost').style.display = 'none';
-            document.getElementById('currentBtn').classList.add('btn-primary');
-            document.getElementById('archiveBtn').classList.remove('btn-primary');
-        }
-        function showArchive() {
-            document.getElementById('currentPost').style.display = 'none';
-            document.getElementById('archivePost').style.display = 'block';
-            document.getElementById('currentBtn').classList.remove('btn-primary');
-            document.getElementById('archiveBtn').classList.add('btn-primary');
-        }
-    </script>
-</div>
-{% endblock %}
+        {% endfor %}
+        {% endif %}
+        <script>
+            function showCurrent() {
+                document.getElementById('currentPost').style.display = 'block';
+                document.getElementById('archivePost').style.display = 'none';
+                document.getElementById('currentBtn').classList.add('btn-primary');
+                document.getElementById('archiveBtn').classList.remove('btn-primary');
+            }
+            function showArchive() {
+                document.getElementById('currentPost').style.display = 'none';
+                document.getElementById('archivePost').style.display = 'block';
+                document.getElementById('currentBtn').classList.remove('btn-primary');
+                document.getElementById('archiveBtn').classList.add('btn-primary');
+            }
+        </script>
+    </div>
+
+    <!-- Logged User Loan Update/Delete Modal -->
+    <div class="modal fade" id="youModalLoan" tabindex="-1" aria-labelledby="youModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="youModalLabel">Delete this post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="text-align: left;">
+                    <p class="fw-bold">You can only delete or update if no transection occurd regarding this loan post.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" name="update" value="Update" data-bs-toggle="modal"
+                        data-bs-target="#loanUpdateModal" data-bs-whatever="@mdo">
+                    <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete"
+                        data-bs-toggle="modal" data-bs-target="#loanDeleteModal" data-bs-whatever="@mdo">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logged User Donation Update/Delete Modal -->
+    <div class="modal fade" id="youModalDonation" tabindex="-1" aria-labelledby="youModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="youModalLabel">Delete this post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="text-align: left;">
+                    <p class="fw-bold">You can only delete or update if no transection occurd regarding this post.</p>
+                </div>
+                <div class="modal-footer">
+                    <!-- <input type="submit" class="btn btn-primary" name="update" value="Update" data-bs-toggle="modal" data-bs-target="#loanUpdateModal" data-bs-whatever="@mdo">
+                <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete" data-bs-toggle="modal" data-bs-target="#loanDeleteModal" data-bs-whatever="@mdo"> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Loan Modal Form -->
+    <div class="modal fade" id="loanUpdateModal" tabindex="-1" aria-labelledby="loanUpdateModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Recipient:</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Message:</label>
+                            <textarea class="form-control" id="message-text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Send message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

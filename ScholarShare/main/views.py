@@ -13,6 +13,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from itertools import chain
 from django.utils import timezone
+from django.contrib.auth.decorators import user_passes_test
 
 
 
@@ -269,34 +270,48 @@ def create_donation_post(request, user):
         return redirect('core_home')
 
 
-# def view_post(request, pk):
-#     loan_post = get_object_or_404(LoanRequest, pk=pk)
-#     user_type = loan_post.userid.usertype
-
-#     if user_type == 'Individual':
-#         return render(request, 'core/view_loan_post.html', {'loan_post': loan_post})
-#     else:
-#         donation_post = get_object_or_404(DonationRequest, pk=pk)
-#         return render(request, 'core/view_donation_post.html', {'donation_post': donation_post})
 
 
-def view_loan_post(request, template_name, post):
-    return redirect(request, template_name, {'post': post})
+def view_loan_post(request, user, template_name, post):
+    return render(request, template_name, {'user': user, 'post': post})
 
 
-def view_post(request, pk):
+
+def view_donation_post(request, user, template_name, post):
+    return render(request, template_name, {'user': user, 'post': post})
+
+@user_exists
+def view_post(request, user, pk):
     user_type = request.GET.get('type', '')
     template_name = "#"
+
     if user_type == 'Individual':
         post = get_object_or_404(LoanRequest, pk=pk)
         template_name = 'core/view_loan_post.html'
+        return view_loan_post(request, user, template_name, post)
 
-    elif user_type == 'Club':
+
+    else:
         post = get_object_or_404(DonationRequest, pk=pk)
         template_name = 'core/view_donation_post.html'
+        return view_donation_post(request, user, template_name, post)
+
+
+
+
+def delete_loan_post(request, pk):
+    loan_post = get_object_or_404(LoanRequest, pk=pk)
+
+    if not loan_post.transaction_happen:
+        loan_post.delete()
+        messages.error(request, "Post deleted successfully.")
     else:
-        return render(request, '404.html')
-    return render(request, template_name, {'post': post})
+        messages.error(request, "You don't have permission to delete this post.")
+
+    return redirect('core_home')
+
+
+
 
 
 

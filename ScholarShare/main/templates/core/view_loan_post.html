@@ -1,2 +1,145 @@
-<h1>loan post</h1>
-<h1>{{post.loan_amount}}</h1>
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}View Loan Post{% endblock %}
+{% block content %}
+
+<style>
+    #view{
+        max-width: 800px;
+        max-height: 400px;
+        margin:  20px 0 0 24%;
+        border: black;
+        border-radius: 10px;
+    }
+    #text-dark:hover{
+        text-decoration: underline;
+        color: #0000EE;
+    }
+</style>
+
+<div class="card mb-3" id="view">
+    {% if post.loan_postimage %}
+    <img src="{{ post.loan_postimage.url }}" class="card-img-top" alt="..."
+        style="height: 300px;max-width: 500px;"><br>
+    {% endif %}
+    <div class="card-body">
+        <p class="fw-bold fs-4">
+            {% if post.userid.userid == user.userid %}
+                <a class="text-dark" style="text-decoration: none;" href="" data-bs-toggle="modal" data-bs-target="#youModal">@you</a>
+            {% else %}
+                <a class="text-dark" style="text-decoration: none;" href="" data-bs-toggle="modal" data-bs-target="#authorModal">@{{ post.userid.userid }}</a>
+            {% endif %}
+        </p>
+        <p class="fw-normal fs-2">{{post.loan_post}}</p>
+        <hr>
+        <div>
+            <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount required:3000&#2547;</p>
+            <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received:1000&#2547;</p>
+            <p class="fw-bolder fs-6" id="text-dark">
+                <a href="" class="text-dark" style="text-decoration: dashed;">Send Loan</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Author Modal -->
+<div class="modal fade" id="authorModal" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authorModalLabel">About this user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: left;">
+                <div class="user-info">
+                    <p class="font-monospace">User Type: <strong>{{ post.userid.usertype }}</strong></p>
+                    <p class="font-monospace">Biography: <strong>{{ post.userid.bio }}</strong></p>
+                </div>
+
+                <div class="post-info">
+                    <hr>
+                    <p class="font-monospace"><strong>Loan posts:</strong> 3 posts</p>
+                    <p class="font-monospace"><strong>Total loan received:</strong> 3000 &#2547;</p>
+                    <p class="font-monospace"><strong>Total loan given:</strong> 3000 &#2547;</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">X</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Logged User Modal -->
+<div class="modal fade" id="youModal" tabindex="-1" aria-labelledby="youModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="youModalLabel">Delete this post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: left;">
+                <p class="fw-bold">You can only delete or update if no transection occurd regarding this post.</p>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" name="update" value="Update" data-bs-toggle="modal" data-bs-target="#loanUpdateModal" data-bs-whatever="@mdo">
+                <input type="submit" class="btn btn-danger" data-bs-dismiss="modal" name="delete" value="Delete" data-bs-toggle="modal" data-bs-target="#loanDeleteModal" data-bs-whatever="@mdo">
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- Update Modal Form -->
+ <div class="modal fade" id="loanUpdateModal" tabindex="-1" aria-labelledby="loanUpdateModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Recipient:</label>
+              <input type="text" class="form-control" id="recipient-name">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Message:</label>
+              <textarea class="form-control" id="message-text"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Send message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="loanDeleteModal" tabindex="-1" aria-labelledby="loanDeleteModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this post?</h5>
+        </div>
+          <form>
+            <div class="mb-3">
+            </div>
+          </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+          <a href="{% url 'delete_loan_post' pk=post.pk %}" class="btn btn-primary">Yes</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+

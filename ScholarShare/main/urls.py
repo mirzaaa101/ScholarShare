@@ -21,6 +21,9 @@ urlpatterns = [
     path('core/create_loan_post',views.create_loan_post, name='create_loan_post'),
     path('core/create_donation_post',views.create_donation_post, name='create_donation_post'),
     path('core/view_post/<int:pk>/', views.view_post, name='view_post'),
+    path('core/view_laon_post/<int:pk>/', views.view_loan_post, name='view_loan_post'),
+    path('core/view_donation_post/<int:pk>/', views.view_donation_post, name='view_donation_post'),
+    path('delete_loan_post/<int:pk>/', views.delete_loan_post, name='delete_loan_post'),
     path('logout/', views.logout_user, name='logout'),
 ]
 
