@@ -28,6 +28,7 @@ urlpatterns = [
     path('delete_donation_post/<int:pk>/', views.delete_donation_post, name='delete_donation_post'),
     path('update_donation_post/<int:pk>/', views.update_donation_post, name='update_donation_post'),
     path('logout/', views.logout_user, name='logout'),
+    path('delete_profile/<str:userid>/<str:username>/', views.delete_profile, name='delete_profile'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

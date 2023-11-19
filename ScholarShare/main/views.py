@@ -360,3 +360,20 @@ def logout_user(request):
     logout(request)
     messages.error(request, "You have been logged out successfully!")
     return redirect('welcoming_page')
+
+
+def delete_profile(request, userid, username):
+    userid = get_object_or_404(NewUser, userid=userid)
+    username = get_object_or_404(User,username=username)
+    donation_posts = DonationRequest.objects.filter(userid=userid, transaction_happen=True)
+    loan_posts = LoanRequest.objects.filter(userid=userid, transaction_happen=True)
+
+    if donation_posts.exists() or loan_posts.exists():
+        messages.error(request, "You cannot delete your profile because of existing transactions.")
+    else:
+        username.delete()
+        userid.delete()
+        logout(request)
+        messages.error(request, "Your profile has been deleted successfully. You have been logged out.")
+
+    return redirect('welcoming_page')
