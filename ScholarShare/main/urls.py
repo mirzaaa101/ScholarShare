@@ -17,6 +17,7 @@ urlpatterns = [
     # Core folder url pattern starts from here
     path('core/home/', views.core_home, name='core_home'),
     path('core/user/', views.core_user, name='core_user'),
+    path('statistics/', views.statistics, name='core_statistics'),
     path('core/update_profile',views.update_profile, name='update_profile' ),
     path('core/create_loan_post',views.create_loan_post, name='create_loan_post'),
     path('core/create_donation_post',views.create_donation_post, name='create_donation_post'),

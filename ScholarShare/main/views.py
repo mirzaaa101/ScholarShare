@@ -69,6 +69,10 @@ def register_user(request):
             messages.error(request,"Please use 8 characters for your password!!")
             return redirect('register')
 
+        if len(phone)>11:
+            messages.error(request,"Please use valid phone number!!")
+            return redirect('register')
+
         user = User.objects.create_user(username, password=password, is_active = False)
         new_user = NewUser(
             usertype=usertype,
@@ -356,7 +360,7 @@ def update_donation_post(request, pk):
     else:
      messages.error(request, "You don't have permission to update this post.")
      return render(request, 'core/core_user.html')
-    
+
 
 def create_comment(request):
     if request.method == 'POST':
@@ -366,19 +370,20 @@ def create_comment(request):
         user_id = request.POST.get('user_id', '')
 
         user = get_object_or_404(NewUser, userid=user_id)
-        
         new_comment = Comment(
             comment=comment_text,
             posttype=post_type,
             postid=post_id,
             user=user,
         )
-        
         new_comment.save()
         messages.error(request, 'Thanks for the comment!')
         return redirect('core_home')
-    
     return render(request, 'core/core_home.html')
+
+@user_exists
+def statistics(request,user):
+    return render(request, 'core/statistics.html', {'user': user})
 
 def logout_user(request):
     logout(request)
