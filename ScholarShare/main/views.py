@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest
+from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest, Comment
 from ScholarShare import settings
 from django.core.mail import send_mail,EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
@@ -277,8 +277,8 @@ def view_loan_post(request, user, template_name, post):
 
 
 
-def view_donation_post(request, user, template_name, post):
-    return render(request, template_name, {'user': user, 'post': post})
+def view_donation_post(request, user, template_name, post,comments):
+    return render(request, template_name, {'user': user, 'post': post,'comments': comments})
 
 @user_exists
 def view_post(request, user, pk):
@@ -293,8 +293,9 @@ def view_post(request, user, pk):
 
     else:
         post = get_object_or_404(DonationRequest, pk=pk)
+        comments = Comment.objects.all()
         template_name = 'core/view_donation_post.html'
-        return view_donation_post(request, user, template_name, post)
+        return view_donation_post(request, user, template_name, post,comments)
 
 
 
@@ -355,6 +356,29 @@ def update_donation_post(request, pk):
     else:
      messages.error(request, "You don't have permission to update this post.")
      return render(request, 'core/core_user.html')
+    
+
+def create_comment(request):
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment_text', '')
+        post_type = request.POST.get('post_type', '')
+        post_id = request.POST.get('post_id', '')
+        user_id = request.POST.get('user_id', '')
+
+        user = get_object_or_404(NewUser, userid=user_id)
+        
+        new_comment = Comment(
+            comment=comment_text,
+            posttype=post_type,
+            postid=post_id,
+            user=user,
+        )
+        
+        new_comment.save()
+        messages.error(request, 'Thanks for the comment!')
+        return redirect('core_home')
+    
+    return render(request, 'core/core_home.html')
 
 def logout_user(request):
     logout(request)

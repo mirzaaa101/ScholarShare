@@ -5,6 +5,7 @@ from .models import About
 from .models import Message
 from .models import LoanRequest
 from .models import DonationRequest
+from .models import Comment
 
 admin.site.register(NewUser)
 admin.site.register(FAQ)
@@ -12,4 +13,5 @@ admin.site.register(About)
 admin.site.register(Message)
 admin.site.register(LoanRequest)
 admin.site.register(DonationRequest)
+admin.site.register(Comment)
 

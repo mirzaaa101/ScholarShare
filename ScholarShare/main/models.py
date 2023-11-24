@@ -87,3 +87,15 @@ class DonationRequest(models.Model):
 
     def __str__(self):
         return f"DonationPost {self.donation_postid} by {self.userid}"
+
+
+class Comment(models.Model):
+    commentid = models.AutoField(primary_key=True)
+    comment = models.TextField(max_length=100)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    posttype = models.CharField(max_length=20)
+    postid = models.CharField(max_length=20)
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.user.userid} - {self.comment[:20]}'

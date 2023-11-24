@@ -16,6 +16,13 @@
     text-decoration: underline;
     color: #0000EE;
   }
+
+  #post-input {
+    flex: 1;
+    border-radius: 20px;
+    width: 600px;
+    display: inline;
+  }
 </style>
 
 <div class="card mb-3" id="view">
@@ -47,6 +54,27 @@
         <a href="" class="text-dark" style="text-decoration: dashed;">Donate</a>
       </p>
     </div>
+    {% if post.userid.userid != user.userid %}
+    <form method="POST" action="{% url 'create_comment' %}">
+      {% csrf_token %}
+      <input type="hidden" name="post_type" value="donation">
+      <input type="hidden" name="post_id" value="{{ post.donation_postid }}">
+      <input type="hidden" name="user_id" value="{{ user.userid }}">
+      <input type="text" class="form-control" placeholder="Write a comment" name="comment_text" id="post-input">
+      <input type="submit" class="btn btn-secondary" value="Comment" name="comment-btn" style="border-radius: 10px;">
+    </form>
+    {% endif %}
+    {% for comment in comments %}
+    {% if comment.postid == post.donation_postid and comment.posttype == 'donation' %}
+    <div class="card" style="width: 100rem; border: none;">
+      <div class="card-body">
+        <h5 class="card-title">{{ comment.user.userid }}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{ comment.comment }}</h6>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+
   </div>
 </div>
 
