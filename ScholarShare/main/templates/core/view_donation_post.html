@@ -4,9 +4,12 @@
 {% block content %}
 
 <style>
+  body{
+    height: auto;
+  }
   #view {
     max-width: 800px;
-    max-height: 400px;
+    max-height: auto;
     margin: 20px 0 0 24%;
     border: black;
     border-radius: 10px;
@@ -19,9 +22,10 @@
 
   #post-input {
     flex: 1;
-    border-radius: 20px;
+    margin: 3px 5px 0 0;
+    border-radius: 30px;
     width: 600px;
-    display: inline;
+    float:left;
   }
 </style>
 
@@ -30,7 +34,7 @@
   <img src="{{ post.donation_postimage.url }}" class="card-img-top" alt="..."
     style="height: 300px;max-width: 500px;"><br>
   {% endif %}
-  <div class="card-body">
+  <div class="card-body" style="max-height: auto;">
     <p class="fw-bold fs-4">
       {% if post.userid.userid == user.userid %}
       @you
@@ -50,35 +54,34 @@
       <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount required:{{post.donation_amount}}&#2547;
       </p>
       <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received:1000&#2547;</p>
+      {% if post.userid.userid != user.userid %}
       <p class="fw-bolder fs-6">
         <a href="" class="text-dark" style="text-decoration: dashed;">Donate</a>
       </p>
+      {% endif %}
     </div>
     {% if post.userid.userid != user.userid %}
-    <form method="POST" action="{% url 'create_comment' %}">
+    <form method="POST" action="{% url 'view_post' pk=post.pk %}?type={{post.userid.usertype}} ">
       {% csrf_token %}
       <input type="hidden" name="post_type" value="donation">
       <input type="hidden" name="post_id" value="{{ post.donation_postid }}">
       <input type="hidden" name="user_id" value="{{ user.userid }}">
       <input type="text" class="form-control" placeholder="Write a comment" name="comment_text" id="post-input">
-      <input type="submit" class="btn btn-secondary" value="Comment" name="comment-btn" style="border-radius: 10px;">
+      <input type="submit" class="btn btn-secondary" value="Share" name="comment-btn" style="border-radius: 30px;">
     </form>
     {% endif %}
     {% for comment in comments %}
-    {% if comment.postid == post.donation_postid and comment.posttype == 'donation' %}
-    <div class="card" style="width: 100rem; border: none;">
-      <div class="card-body">
-        <h5 class="card-title">{{ comment.user.userid }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{{ comment.comment }}</h6>
-      </div>
+    {% if comment.postid == post.donation_postid|stringformat:"s" and comment.posttype == 'donation' %}
+    <div class="card" style="width: 100rem;border: none;margin: 0 0 0 0;">
+        <div class="card-body">
+            <h5 class="card-title" style="margin-bottom: 0;font-weight: bolder;">{{ comment.user.userid }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted" style="margin-bottom: 0;">{{ comment.comment }}</h6>
+        </div>
     </div>
     {% endif %}
-    {% endfor %}
-
+  {% endfor %}
   </div>
 </div>
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="authorModal" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
