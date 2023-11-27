@@ -175,8 +175,6 @@ def contact(request):
 def core_home(request, user):
     loan_post = LoanRequest.objects.all()
     donation_post = DonationRequest.objects.all()
-
-    # Combine loan_post and donation_post into a single list
     all_posts = sorted(
         chain(loan_post, donation_post),
         key=lambda post: post.created_at,
@@ -276,28 +274,45 @@ def create_donation_post(request, user):
 
 
 
-def view_loan_post(request, user, template_name, post):
-    return render(request, template_name, {'user': user, 'post': post})
+def view_loan_post(request, user, template_name, post, comments):
+    return render(request, template_name, {'user': user, 'post': post, 'comments': comments})
 
 
 
-def view_donation_post(request, user, template_name, post,comments):
-    return render(request, template_name, {'user': user, 'post': post,'comments': comments})
+def view_donation_post(request, user, template_name, post, comments):
+    print(comments)
+    return render(request, template_name, {'user': user, 'post': post, 'comments': comments})
+
 
 @user_exists
 def view_post(request, user, pk):
     user_type = request.GET.get('type', '')
     template_name = "#"
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment_text', '')
+        post_type = request.POST.get('post_type', '')
+        post_id = request.POST.get('post_id', '')
+        user_id = request.POST.get('user_id', '')
 
+        user = get_object_or_404(NewUser, userid=user_id)
+        new_comment = Comment(
+            comment=comment_text,
+            posttype=post_type,
+            postid=post_id,
+            user=user,
+        )
+        new_comment.save()
+        messages.error(request, 'Thanks for your comment!')
+
+    comments = Comment.objects.all()
     if user_type == 'Individual':
         post = get_object_or_404(LoanRequest, pk=pk)
         template_name = 'core/view_loan_post.html'
-        return view_loan_post(request, user, template_name, post)
+        return view_loan_post(request, user, template_name, post,comments)
 
 
     else:
         post = get_object_or_404(DonationRequest, pk=pk)
-        comments = Comment.objects.all()
         template_name = 'core/view_donation_post.html'
         return view_donation_post(request, user, template_name, post,comments)
 
