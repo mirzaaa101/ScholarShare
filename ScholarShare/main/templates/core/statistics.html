@@ -3,15 +3,117 @@
 {% block title %}Your Stats{% endblock %}
 {% block content %}
 <!-- your code will start from here -->
-<style>
-    .card{
-        width: 800px;
-        height: auto;
-        margin: 30px 40px 0 300px;
-        border-color: transparent;
-    }
-</style>
-<div class="card">
- <button class="btn btn-secondary" style="width: auto;">Add Balance</button>
+<div class="container mt-5">
+    <!-- Header -->
+   <b><h2>Statistic</h2></b>  
+
+    <!-- Add Balance Button -->
+    <div class="text-end mb-3">
+        <button class="btn btn-secondary">Add Balance</button>
+    </div>
+
+    <!-- Info Cards Section -->
+    <div class="row g-4">
+        <!-- Loan/Earn Ratio Section -->
+        <div class="col-lg-3">
+            <div class="card h-100" style="background-color: #D0E8E8;">
+                <div class="card-header">
+                    Loan/Earn Ratio
+                </div>
+                <div class="card-body">
+                    <p>Loan: ${{ statistic_data.loan }}</p>
+                    <p>Earn: ${{ statistic_data.earn }}</p>
+                    <p>Ratio: {{ statistic_data.calculate_ratio }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Currency Balance Section -->
+        <div class="col-lg-3">
+            <div class="card h-100" style="background-color: #EFE784;">
+                <div class="card-header">
+                    Currency Balance
+                </div>
+                <div class="card-body">
+                    <p>Current Currency Balance: ${{ statistic_data.currency_balance }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Negative Balance Section -->
+        <div class="col-lg-3">
+            <div class="card h-100" style="background-color: #af505d;">
+                <div class="card-header">
+                    Negative Balance
+                </div>
+                <div class="card-body">
+                    <p>Negative Balance: ${{ statistic_data.negative_balance }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donated Amount Section -->
+        <div class="col-lg-3">
+            <div class="card h-100" style="background-color: #c5f5c5;">
+                <div class="card-header">
+                    Donated Amount
+                </div>
+                <div class="card-body">
+                    <p>Donated Amount: ${{ statistic_data.donated_amount }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yearly Money Spent/Taken Section -->
+    <div class="chart-container mt-4">
+        <div class="card" style="background-color: #fcfcfc;">
+            <div class="card-header">
+                Yearly Money Overview
+            </div>
+            <div class="card-body">
+                <canvas id="barChart" class="w-100"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Script to initialize the bar chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Placeholder data for the entire year
+    var chartData = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        moneySpent: [50, 30, 20, 40, 60, 25, 45, 35, 55, 30, 40, 20],
+        moneyTaken: [10, 15, 25, 20, 30, 15, 20, 40, 30, 45, 25, 35],
+    };
+
+    // Create a bar chart
+    var ctx = document.getElementById('barChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Money Spent',
+                data: chartData.moneySpent,
+                backgroundColor: 'rgba(173, 216, 230, 0.7)',
+                borderColor: 'rgba(173, 216, 230, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Money Taken',
+                data: chartData.moneyTaken,
+                backgroundColor: 'rgba(240, 128, 128, 0.7)',
+                borderColor: 'rgba(240, 128, 128, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true }
+            }
+        }
+    });
+</script>   
 {% endblock %}
