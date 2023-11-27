@@ -3,15 +3,179 @@
 {% block title %}Your Stats{% endblock %}
 {% block content %}
 <!-- your code will start from here -->
-<style>
-    .card{
-        width: 800px;
-        height: auto;
-        margin: 30px 40px 0 300px;
-        border-color: transparent;
-    }
-</style>
-<div class="card">
- <button class="btn btn-secondary" style="width: auto;">Add Balance</button>
+<div class="container mt-5">
+    <!-- Header -->
+   
+
+    <!-- Add Balance Button -->
+    <div class="text-end mb-3">
+        <button class="btn btn-secondary">Add Balance</button>
+    </div>
+
+    <!-- Info Cards Section -->
+    <div class="row g-4">
+        <!-- Loan/Earn Ratio Section -->
+        <div class="col-lg-3">
+            <div class="card h-100" style="background-color: #D0E8E8;">
+                <div class="card-header">
+                    Loan/Earn Ratio
+                </div>
+                <div class="card-body">
+                    <p>Loan: ${{ statistic_data.loan }}</p>
+                    <p>Earn: ${{ statistic_data.earn }}</p>
+                    <p>Ratio: {{ statistic_data.calculate_ratio }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Currency Balance Section -->
+        <div class="col-lg-3">
+            <div class="card h-100" style="background-color: #EFE784;">
+                <div class="card-header">
+                    Currenct Balance
+                </div>
+                <div class="card-body">
+                    <p>Available Balance Balance: ${{ statistic_data.currency_balance }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Negative Balance Section -->
+        <div class="col-lg-3">
+            <div class="card h-100" style="background-color: rgba(240, 128, 128, 0.7);">
+                <div class="card-header">
+                    Negative Balance
+                </div>
+                <div class="card-body">
+                    <p>Negative Balance: ${{ statistic_data.negative_balance }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Donated Amount Section -->
+        <div class="col-lg-3">
+            <div class="card h-100" style="background-color: #c5f5c5;">
+                <div class="card-header">
+                    Donated Amount
+                </div>
+                <div class="card-body">
+                    <p>Donated Amount: ${{ statistic_data.donated_amount }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yearly Money Spent/Taken Section -->
+    <div class="chart-container mt-4">
+        <div class="card" style="background-color: #fcfcfc;">
+            <div class="card-header">
+                Weekly/Monthly Money Overview
+            <div>
+    </div>
+
+<!-- Chart container -->
+    <div class="chart-container mt-4">
+        <div class="text-end mb-3">
+            <button class="btn btn-secondary" onclick="switchInterval('weekly')">Weekly</button>
+            <button class="btn btn-secondary" onclick="switchInterval('monthly')">Monthly</button>
+        </div>
+    <canvas id="barChart" class="w-100"></canvas>
+    </div>
+        </div>
+            <div class="card-body">
+                <canvas id="barChart" class="w-100"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+
+<!-- Add buttons for switching between weekly and monthly -->
+ 
+
+<!-- Script to initialize the bar chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Placeholder data for weekly and monthly
+    var weeklyData = {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        dayLabels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+        moneySpent: [20, 30, 25, 40],
+        moneyTaken: [10, 15, 20, 25],
+    };
+
+    var monthlyData = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        moneySpent: [50, 30, 20, 40, 60, 25, 45, 35, 55, 30, 40, 20],
+        moneyTaken: [10, 15, 25, 20, 30, 15, 20, 40, 30, 45, 25, 35],
+    };
+
+    // Initial data
+    var currentData = weeklyData;
+
+    // Create a bar chart
+    var ctx = document.getElementById('barChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: currentData.labels,
+            datasets: [{
+                label: 'Money Spent',
+                data: currentData.moneySpent,
+                backgroundColor: 'rgba(173, 216, 230, 0.7)',
+                borderColor: 'rgba(173, 216, 230, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Money Taken',
+                data: currentData.moneyTaken,
+                backgroundColor: 'rgba(240, 128, 128, 0.7)',
+                borderColor: 'rgba(240, 128, 128, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function (tooltipItems) {
+                            if (currentData.dayLabels) {
+                                return currentData.dayLabels[tooltipItems[0].index];
+                            } else {
+                                return currentData.labels[tooltipItems[0].index];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Function to switch between weekly and monthly
+    function switchInterval(interval) {
+        if (interval === 'weekly') {
+            currentData = weeklyData;
+        } else if (interval === 'monthly') {
+            currentData = monthlyData;
+        }
+
+        // Update the chart data
+        myChart.data.labels = currentData.labels;
+        myChart.data.datasets[0].data = currentData.moneySpent;
+        myChart.data.datasets[1].data = currentData.moneyTaken;
+
+        // Update the chart
+        myChart.update();
+    }
+
+    // Example: Switch to weekly initially
+    switchInterval('weekly');
+</script>
+
+
+
 {% endblock %}
