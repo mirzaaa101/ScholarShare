@@ -203,8 +203,8 @@ def core_home(request, user):
 
 @user_exists
 def core_user(request, user):
-    loan_post = LoanRequest.objects.all()
-    donation_post = DonationRequest.objects.all()
+    loan_post = LoanRequest.objects.all().order_by('-created_at')
+    donation_post = DonationRequest.objects.all().order_by('-created_at')
     return render(request, 'core/user.html', {'user': user, 'loan_post': loan_post, 'donation_post': donation_post})
 
 

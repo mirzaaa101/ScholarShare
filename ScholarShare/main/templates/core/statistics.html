@@ -2,28 +2,31 @@
 {% load static %}
 {% block title %}Your Stats{% endblock %}
 {% block content %}
+<style>
+    .container{
+        margin-top: 2px;
+        margin-bottom: 0;
+        border-color: transparent;
+    }
+</style>
 <!-- your code will start from here -->
-<div class="container mt-5">
+<div class="container">
     <!-- Header -->
-   
-
     <!-- Add Balance Button -->
     <div class="text-end mb-3">
-        <button class="btn btn-secondary">Add Balance</button>
+        <button class="btn btn-success">Add Balance</button>
     </div>
 
     <!-- Info Cards Section -->
     <div class="row g-4">
         <!-- Loan/Earn Ratio Section -->
         <div class="col-lg-3">
-            <div class="card h-100" style="background-color: #D0E8E8;">
-                <div class="card-header">
-                    Loan/Earn Ratio
-                </div>
-                <div class="card-body">
-                    <p>Loan: ${{ statistic_data.loan }}</p>
-                    <p>Earn: ${{ statistic_data.earn }}</p>
-                    <p>Ratio: {{ statistic_data.calculate_ratio }}</p>
+            <div class="card h-30" style="background-color: #D0E8E8;">
+                <div class="card-header" style="margin-top: 2px;">Loan/Earn Ratio</div>
+                <div class="card-body h-50">
+                    <p style="margin-bottom: 2px;">Loan: {{ statistic_data.loan }}&#2547</p>
+                    <p style="margin-bottom: 2px;">Earn: {{ statistic_data.earn }}&#2547</p>
+                    <p style="margin-bottom: 2px;">Ratio: {{ statistic_data.calculate_ratio }}</p>
                 </div>
             </div>
         </div>
@@ -35,7 +38,7 @@
                     Currenct Balance
                 </div>
                 <div class="card-body">
-                    <p>Available Balance Balance: ${{ statistic_data.currency_balance }}</p>
+                    <p>Available Balance: {{ statistic_data.currency_balance }}&#2547</p>
                 </div>
             </div>
         </div>
@@ -47,7 +50,7 @@
                     Negative Balance
                 </div>
                 <div class="card-body">
-                    <p>Negative Balance: ${{ statistic_data.negative_balance }}</p>
+                    <p>Negative Balance: {{ statistic_data.negative_balance }}&#2547</p>
                 </div>
             </div>
         </div>
@@ -59,14 +62,14 @@
                     Donated Amount
                 </div>
                 <div class="card-body">
-                    <p>Donated Amount: ${{ statistic_data.donated_amount }}</p>
+                    <p>Donated Amount:{{ statistic_data.donated_amount }}&#2547</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Yearly Money Spent/Taken Section -->
-    <div class="chart-container mt-4">
+    <div class="chart-container mt-4" style="margin-bottom: 0; height: 100px;">
         <div class="card" style="background-color: #fcfcfc;">
             <div class="card-header">
                 Weekly/Monthly Money Overview
@@ -74,15 +77,15 @@
     </div>
 
 <!-- Chart container -->
-    <div class="chart-container mt-4">
+    <div class="chart-container mt-2">
         <div class="text-end mb-3">
-            <button class="btn btn-secondary" onclick="switchInterval('weekly')">Weekly</button>
-            <button class="btn btn-secondary" onclick="switchInterval('monthly')">Monthly</button>
+            <button class="btn btn-transparent" onclick="switchInterval('weekly')">Weekly</button>
+            <button class="btn btn-transparent" onclick="switchInterval('monthly')">Monthly</button>
         </div>
     <canvas id="barChart" class="w-100"></canvas>
     </div>
         </div>
-            <div class="card-body">
+            <div class="card-body" style="height: 0;">
                 <canvas id="barChart" class="w-100"></canvas>
             </div>
         </div>
@@ -92,8 +95,6 @@
 
 
 <!-- Add buttons for switching between weekly and monthly -->
- 
-
 <!-- Script to initialize the bar chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -175,7 +176,5 @@
     // Example: Switch to weekly initially
     switchInterval('weekly');
 </script>
-
-
 
 {% endblock %}
