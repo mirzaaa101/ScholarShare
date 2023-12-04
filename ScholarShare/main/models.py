@@ -111,10 +111,13 @@ class AddBalance(models.Model):
         return f'Balance {self.available_balance} of {self.user.userid}'
 
 
-class SendDonation(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
+class AddDonation(models.Model):
     donation_id = models.AutoField(primary_key=True)
+    donated_to = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='donations_received')
+    donation_post = models.ForeignKey(DonationRequest, on_delete=models.CASCADE, related_name='donations')
+    donated_user = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='donations_made')
     amount = models.FloatField(default=0.00)
     wish = models.CharField(max_length=200)
-    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+         return f'{self.donated_user.userid} donated {self.amount}'

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest, Comment, AddBalance
+from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest, Comment, AddBalance, AddDonation
 from ScholarShare import settings
 from django.core.mail import send_mail,EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
@@ -435,3 +435,48 @@ def delete_profile(request, userid, username):
         messages.error(request, "Your profile has been deleted successfully. You have been logged out.")
 
     return redirect('welcoming_page')
+
+
+
+@user_exists
+def send_donation(request, user):
+    if request.method == "POST":
+        for_ = request.POST.get('for')
+        to = request.POST.get('to')
+        from_ = request.POST.get('from')
+        amount = float(request.POST.get('amount', 0))
+        wish = request.POST.get('wish')
+
+        # Retrieve instances for the foreign keys
+        donation_post = get_object_or_404(DonationRequest, pk=for_)
+        donated_to_user = get_object_or_404(NewUser, pk=to)
+        donated_user = get_object_or_404(NewUser, pk=from_)
+
+        # Retrieve the latest AddBalance for the donated_user
+        add_balances = AddBalance.objects.filter(user=donated_user.userid).order_by('-created_at')
+        if add_balances.exists():
+            latest_add_balance = add_balances.first()
+
+            # Check if the user's available balance is sufficient
+            if latest_add_balance.available_balance >= amount:
+                # Proceed with the donation
+                add_donation = AddDonation(
+                    donated_to=donated_to_user,
+                    donation_post=donation_post,
+                    donated_user=donated_user,
+                    amount=amount,
+                    wish=wish,
+                )
+                add_donation.save()
+                # Subtract the donation amount from the available balance
+                latest_add_balance.available_balance -= amount
+                latest_add_balance.save()
+                messages.error(request, "Thanks for your donation, check other posts.")
+            else:
+                messages.error(request, "Insufficient funds. Please check your available balance.")
+        else:
+            messages.error(request, "Insufficient funds. Please check your available balance.")
+
+        return redirect('core_user')
+
+    return redirect('core_user')

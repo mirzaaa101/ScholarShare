@@ -7,6 +7,7 @@ from .models import LoanRequest
 from .models import DonationRequest
 from .models import Comment
 from .models import AddBalance
+from .models import AddDonation
 
 admin.site.register(NewUser)
 admin.site.register(FAQ)
@@ -16,4 +17,5 @@ admin.site.register(LoanRequest)
 admin.site.register(DonationRequest)
 admin.site.register(Comment)
 admin.site.register(AddBalance)
+admin.site.register(AddDonation)
 
