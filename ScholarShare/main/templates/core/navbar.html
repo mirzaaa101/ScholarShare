@@ -110,8 +110,8 @@
         <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete your profile?</h5>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-        <a href="{% url 'delete_profile' user.userid user.username %}" class="btn btn-primary">Yes</a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <a href="{% url 'delete_profile' user.userid user.username %}" class="btn btn-danger">Yes</a>
       </div>
     </div>
   </div>

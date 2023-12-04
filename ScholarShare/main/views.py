@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest, Comment
+from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest, Comment, AddBalance
 from ScholarShare import settings
 from django.core.mail import send_mail,EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
@@ -397,8 +397,22 @@ def create_comment(request):
     return render(request, 'core/core_home.html')
 
 @user_exists
-def statistics(request,user):
-    return render(request, 'core/statistics.html', {'user': user})
+def core_statistics(request, user):
+    if request.method == 'POST':
+        phone = float(request.POST.get('phone'))
+        amount = float(request.POST.get('amount', 0))
+        add_balance, created = AddBalance.objects.get_or_create(user=user, is_first_transaction=True)
+
+        if not created:
+            add_balance.available_balance += amount
+            add_balance.is_first_transaction = False
+        else:
+            add_balance.available_balance = amount
+
+        add_balance.save()
+        messages.error(request, f"Balance Added Successfully From the Number {phone} !!")
+    available_balance = AddBalance.objects.all()
+    return render(request, 'core/statistics.html', {'user': user,'available_balance':available_balance})
 
 def logout_user(request):
     logout(request)

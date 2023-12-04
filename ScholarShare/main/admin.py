@@ -6,6 +6,7 @@ from .models import Message
 from .models import LoanRequest
 from .models import DonationRequest
 from .models import Comment
+from .models import AddBalance
 
 admin.site.register(NewUser)
 admin.site.register(FAQ)
@@ -14,4 +15,5 @@ admin.site.register(Message)
 admin.site.register(LoanRequest)
 admin.site.register(DonationRequest)
 admin.site.register(Comment)
+admin.site.register(AddBalance)
 

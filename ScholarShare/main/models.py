@@ -99,4 +99,22 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.user.userid} - {self.comment[:20]}'
-    
+
+class AddBalance(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    account_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+    available_balance = models.FloatField(default=0.00)
+    is_first_transaction = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'Balance {self.available_balance} of {self.user.userid}'
+
+
+class SendDonation(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    donation_id = models.AutoField(primary_key=True)
+    amount = models.FloatField(default=0.00)
+    wish = models.CharField(max_length=200)
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
+

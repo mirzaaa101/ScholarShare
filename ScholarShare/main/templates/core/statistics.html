@@ -10,11 +10,14 @@
     }
 </style>
 <!-- your code will start from here -->
+{% if user.usertype == "Individual" %}
 <div class="container">
     <!-- Header -->
     <!-- Add Balance Button -->
     <div class="text-end mb-3">
-        <button class="btn btn-success">Add Balance</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addBalanceModal" data-bs-whatever="@mdo">
+            Add Balance
+        </button>
     </div>
 
     <!-- Info Cards Section -->
@@ -35,10 +38,14 @@
         <div class="col-lg-3">
             <div class="card h-100" style="background-color: #EFE784;">
                 <div class="card-header">
-                    Currenct Balance
+                    Current Balance
                 </div>
                 <div class="card-body">
-                    <p>Available Balance: {{ statistic_data.currency_balance }}&#2547</p>
+                    {% for balance in available_balance %}
+                    {% if user == balance.user %}
+                    <p>Available Balance: {{ balance.available_balance }}&#2547</p>
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -91,11 +98,6 @@
         </div>
     </div>
 </div>
-
-
-
-<!-- Add buttons for switching between weekly and monthly -->
-<!-- Script to initialize the bar chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Placeholder data for weekly and monthly
@@ -111,11 +113,7 @@
         moneySpent: [50, 30, 20, 40, 60, 25, 45, 35, 55, 30, 40, 20],
         moneyTaken: [10, 15, 25, 20, 30, 15, 20, 40, 30, 45, 25, 35],
     };
-
-    // Initial data
     var currentData = weeklyData;
-
-    // Create a bar chart
     var ctx = document.getElementById('barChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -176,5 +174,32 @@
     // Example: Switch to weekly initially
     switchInterval('weekly');
 </script>
-
+<div class="modal fade" id="addBalanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add balance in your account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{%url 'core_statistics' %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-2">
+              <input type="text" class="form-control" name="phone" value="{{user.phone}}" placeholder="Enter your bkash number">
+            </div>
+            <div class="mb-2">
+                <input type="number" class="form-control" name="amount" placeholder="Enter the amount" required>
+                <input type="hidden" class="form-control" name="userid" value="{{user.userid}}">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" name='submit' value="Add" class="btn btn-primary">
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+{%endif%}
+<!-- Statistics of clubb starts from here -->
 {% endblock %}

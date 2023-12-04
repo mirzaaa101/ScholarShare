@@ -17,11 +17,11 @@
         color: #0000EE;
     }
     #post-input {
-    flex: 1;
-    margin: 3px 5px 0 0;
-    border-radius: 30px;
-    width: 600px;
-    float:left;
+        flex: 1;
+        margin: 3px 5px 0 0;
+        border-radius: 30px;
+        width: 600px;
+        float:left;
     }
 </style>
 
@@ -52,11 +52,12 @@
             <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount
                 required:{{post.loan_amount}}&#2547;</p>
             <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received:1000&#2547;</p>
-            {% if post.userid.userid != user.userid %}
-            <p class="fw-bolder fs-6" id="text-dark">
-                <a href="" class="text-dark" style="text-decoration: dashed;">Send Loan</a>
-            </p>
+            {% if post.userid.userid != user.userid and user.usertype != 'Club' %}
+            <button class="btn btn-outline-primary" style="margin-bottom: 20px;">Send Loan</button>
+            {% elif user.usertype == 'Club' %}
+            <button class="btn btn-outline-primary" style="margin-bottom: 20px;" disabled>Send Loan</button>
             {% endif %}
+
         </div>
         {% if post.userid.userid != user.userid %}
         <form method="POST" action="{% url 'view_post' pk=post.pk %}?type={{post.userid.usertype}} ">

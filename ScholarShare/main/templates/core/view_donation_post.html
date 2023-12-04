@@ -55,9 +55,7 @@
       </p>
       <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received:1000&#2547;</p>
       {% if post.userid.userid != user.userid %}
-      <p class="fw-bolder fs-6">
-        <a href="" class="text-dark" style="text-decoration: dashed;">Donate</a>
-      </p>
+      <button class="btn btn-outline-primary" style="margin-bottom: 20px;" data-bs-toggle="modal" data-bs-target="#donateModal" data-bs-whatever="@mdo">Donate</button>
       {% endif %}
     </div>
     {% if post.userid.userid != user.userid %}
@@ -174,4 +172,34 @@
   </div>
 </div>
 
+
+
+
+<div class="modal fade" id="donateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="font-weight: bold;" id="exampleModalLabel">Your donation means a lot to us</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{%url 'core_statistics' %}" method="POST">
+          {% csrf_token %}
+          <div class="mb-2">
+            <input type="hidden" class="form-control" name="to" value="{{post.userid.userid}}">
+            <input type="hidden" class="form-control" name="from" value="{{user.userid}}">
+            <input type="number" class="form-control" name="amount" placeholder="Enter the amount" required>
+          </div>
+          <div class="mb-2">
+              <textarea class="form-control" id="message-text" placeholder="Send a wish message" required></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No,I changed my mind</button>
+        <input type="submit" name='submit' value="Confirm" class="btn btn-primary">
+      </div>
+  </form>
+    </div>
+  </div>
+</div>
 {% endblock %}
