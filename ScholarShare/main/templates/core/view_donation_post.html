@@ -45,17 +45,21 @@
       <a class="text-dark" style="text-decoration: none;" href="" data-bs-toggle="modal" data-bs-target="#authorModal">
         @{{ post.userid.userid }}
       </a>
-      <i class="fa-solid fa-flag" style="margin-left: 500px;font-size: 15px;"> <small>Report</small></i>
+      <i class="fa-solid fa-flag" style="margin-left: 500px;font-size: 15px;">
+        <small><a href="" class="text-dark" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="@mdo">Report</a></small>
+      </i>
       {% endif %}
     </p>
     <p class="fw-normal fs-2">{{post.donation_post}}</p>
     <hr>
     <div>
-      <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount required:{{post.donation_amount}}&#2547;
+      <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount required: {{post.donation_amount}}&#2547;
       </p>
-      <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received:1000&#2547;</p>
+      <p class="fw-bolder fs-6" style="float: left;margin-right: 100px;">Amount received: {{donation}} &#2547;</p>
       {% if post.userid.userid != user.userid %}
       <button class="btn btn-outline-primary" style="margin-bottom: 20px;" data-bs-toggle="modal" data-bs-target="#donateModal" data-bs-whatever="@mdo">Donate</button>
+      {% else%}
+      <button class="btn btn-outline-primary" style="margin-bottom: 20px;" data-bs-toggle="modal" data-bs-target="#viewActivity" data-bs-whatever="@mdo">View Activity</button>
       {% endif %}
     </div>
     {% if post.userid.userid != user.userid %}
@@ -97,7 +101,7 @@
 
         <div class="post-info">
           <hr>
-          <p class="font-monospace"><strong>Donation posts:</strong> 3 posts</p>
+          <p class="font-monospace"><strong>Donation posts:</strong> {{ user.donationrequest_set.all.count }} posts</p>
           <p class="font-monospace"><strong>Total donation received:</strong> 3000 &#2547;</p>
           <p class="font-monospace"><strong>Total donation given:</strong> 3000 &#2547;</p>
         </div>
@@ -203,4 +207,70 @@
     </div>
   </div>
 </div>
+
+<!-- View Activity -->
+<div class="modal fade" id="viewActivity" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="authorModalLabel">View activities regarding this post</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="text-align: left;">
+        <div class="post-info">
+          {% if donations_info %}
+          {% for donation in donations_info %}
+              <p class="font-monospace">Congrats:
+                You have received a donation from <strong>{{ donation.donated_user.userid }}  of {{ donation.amount }} &#2547;,</strong> with wish message "{{ donation.wish }}"
+              </p>
+              <hr>
+          {% endfor %}
+          {%else%}
+          <p class="font-monospace">Sorry, you did not receive any donation yet!!</p>
+          {%endif%}
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close this post</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Report Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Report this user/post</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'report' %}" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <input type="hidden" name="report-from" value="{{user.userid}}">
+            <input type="hidden" name="report-to" value="{{post.userid.userid}}" >
+            <label for="report-reason" class="form-label">Select a reason</label>
+            <select name="report-reason" id="report-reason" class="form-select">
+              <option value="spam">Spam</option>
+              <option value="harassment">Harassment</option>
+              <option value="violence">Violence</option>
+              <option value="violence">Other</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <textarea class="form-control" name="short-description" placeholder="Tell us about this user"></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <input type="submit" class="btn btn-danger" value="Report" name="submit">
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

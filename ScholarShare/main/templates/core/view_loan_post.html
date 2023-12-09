@@ -43,7 +43,9 @@
                 data-bs-target="#authorModal">
                 @{{ post.userid.userid }}
             </a>
-            <i class="fa-solid fa-flag" style="margin-left: 500px;font-size: 15px;"> <small>Report</small></i>
+            <i class="fa-solid fa-flag" style="margin-left: 500px;font-size: 15px;">
+                <small><a href="" class="text-dark" data-bs-toggle="modal" data-bs-target="#reportModal" data-bs-whatever="@mdo">Report</a></small>
+              </i>
             {% endif %}
         </p>
         <p class="fw-normal fs-2">{{post.loan_post}}</p>
@@ -177,4 +179,39 @@
         </div>
     </div>
 </div>
+
+<!-- Report Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Report this user/post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'report' %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <input type="hidden" name="report-from" value="{{user.userid}}">
+              <input type="hidden" name="report-to" value="{{post.userid.userid}}" >
+              <label for="report-reason" class="form-label">Select a reason</label>
+              <select name="report-reason" id="report-reason" class="form-select">
+                <option value="spam">Spam</option>
+                <option value="harassment">Harassment</option>
+                <option value="violence">Violence</option>
+                <option value="violence">Other</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" name="short-description" placeholder="Tell us about this user"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-danger" value="Report" name="submit">
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}

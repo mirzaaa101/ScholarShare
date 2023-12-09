@@ -121,3 +121,17 @@ class AddDonation(models.Model):
 
     def __str__(self) -> str:
          return f'{self.donated_user.userid} donated {self.amount}'
+
+
+class Report(models.Model):
+    report_at = models.DateTimeField(auto_now_add=True)
+    report_from = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='reports_sent')
+    report_to = models.ForeignKey(NewUser, on_delete=models.CASCADE, related_name='reports_received')
+    report_reason = models.CharField(max_length=50)
+    short_description = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f"{self.report_from.userid} reported {self.report_to.userid}"
+
+
+

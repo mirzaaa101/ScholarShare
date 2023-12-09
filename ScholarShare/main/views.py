@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
-from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest, Comment, AddBalance, AddDonation
+from.models import NewUser, FAQ, About, Message,LoanRequest, DonationRequest, Comment, AddBalance, AddDonation, Report
 from ScholarShare import settings
 from django.core.mail import send_mail,EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
@@ -13,7 +13,8 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes, force_str
 from itertools import chain
 from django.utils import timezone
-from django.contrib.auth.decorators import user_passes_test
+from django.db.models import Sum
+
 
 
 
@@ -280,8 +281,10 @@ def view_loan_post(request, user, template_name, post, comments):
 
 
 def view_donation_post(request, user, template_name, post, comments):
-    print(comments)
-    return render(request, template_name, {'user': user, 'post': post, 'comments': comments})
+    donations_info = AddDonation.objects.filter(donation_post=post)
+    donations_for_post = AddDonation.objects.filter(donation_post=post)
+    total_amount_received = donations_for_post.aggregate(Sum('amount'))['amount__sum'] or 0.0
+    return render(request, template_name, {'user': user, 'post': post, 'comments': comments,'donation': total_amount_received, 'donations_info':donations_info})
 
 
 @user_exists
@@ -480,3 +483,24 @@ def send_donation(request, user):
         return redirect('core_user')
 
     return redirect('core_user')
+
+
+def report(request):
+    if request.method == "POST":
+        report_from = request.POST['report-from']
+        report_to = request.POST['report-to']
+        report_reason = request.POST['report-reason']
+        short_description = request.POST['short-description']
+        from_ = get_object_or_404(NewUser, userid=report_from)
+        to_ = get_object_or_404(NewUser, userid=report_to)
+        report = Report(
+            report_from=from_,
+            report_to=to_,
+            report_reason=report_reason,
+            short_description=short_description
+        )
+        report.save()
+        messages.error(request, "Thanks for your report. We will take action if your report reason is valid.")
+        return redirect('core_home')
+
+    return redirect('core_home')
