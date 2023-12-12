@@ -29,10 +29,6 @@ def welcoming_page(request):
     ]
     return render(request, 'welcoming_page.html',{'image_filenames': image_filenames})
 
-def logout_user(request):
-    logout(request)
-    messages.error(request,"You have been logged out successfully!!")
-    return redirect('welcoming_page')
 
 def confirm_registration(request,uidb64,token):
     try:
@@ -169,9 +165,9 @@ def contact(request):
         return redirect('welcoming_page')
 
 
+
+
 # Please start writing from here for main functionality
-
-
 @user_exists
 def core_home(request, user):
     loan_post = LoanRequest.objects.all()
@@ -273,12 +269,8 @@ def create_donation_post(request, user):
         return redirect('core_home')
 
 
-
-
 def view_loan_post(request, user, template_name, post, comments):
     return render(request, template_name, {'user': user, 'post': post, 'comments': comments})
-
-
 
 def view_donation_post(request, user, template_name, post, comments):
     donations_info = AddDonation.objects.filter(donation_post=post)
@@ -318,8 +310,6 @@ def view_post(request, user, pk):
         post = get_object_or_404(DonationRequest, pk=pk)
         template_name = 'core/view_donation_post.html'
         return view_donation_post(request, user, template_name, post,comments)
-
-
 
 
 def delete_loan_post(request, pk):
@@ -423,6 +413,12 @@ def logout_user(request):
     return redirect('welcoming_page')
 
 
+def logout_user(request):
+    logout(request)
+    messages.error(request,"You have been logged out successfully!!")
+    return redirect('welcoming_page')
+
+
 def delete_profile(request, userid, username):
     userid = get_object_or_404(NewUser, userid=userid)
     username = get_object_or_404(User,username=username)
@@ -450,19 +446,16 @@ def send_donation(request, user):
         amount = float(request.POST.get('amount', 0))
         wish = request.POST.get('wish')
 
-        # Retrieve instances for the foreign keys
         donation_post = get_object_or_404(DonationRequest, pk=for_)
         donated_to_user = get_object_or_404(NewUser, pk=to)
         donated_user = get_object_or_404(NewUser, pk=from_)
 
-        # Retrieve the latest AddBalance for the donated_user
         add_balances = AddBalance.objects.filter(user=donated_user.userid).order_by('-created_at')
         if add_balances.exists():
             latest_add_balance = add_balances.first()
 
-            # Check if the user's available balance is sufficient
             if latest_add_balance.available_balance >= amount:
-                # Proceed with the donation
+
                 add_donation = AddDonation(
                     donated_to=donated_to_user,
                     donation_post=donation_post,
@@ -471,7 +464,7 @@ def send_donation(request, user):
                     wish=wish,
                 )
                 add_donation.save()
-                # Subtract the donation amount from the available balance
+
                 latest_add_balance.available_balance -= amount
                 latest_add_balance.save()
                 messages.error(request, "Thanks for your donation, check other posts.")
