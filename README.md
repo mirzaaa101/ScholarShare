@@ -2,6 +2,32 @@
 
 Welcome to ScholarShare, a web application developed by the ScrumTroops team to assist students in managing their financial needs and supporting student-driven fundraising campaigns. ScholarShare offers a range of features to empower students, promote financial literacy, and enhance the sense of community within educational institutions.
 
+## Prototype
+![welcoming_page1](https://github.com/mirzaaa101/ScholarShare/assets/132736299/4a0642af-c347-4d72-b1e8-f0936ddb4c22)
+![welcoming_page2](https://github.com/mirzaaa101/ScholarShare/assets/132736299/377673c3-3172-477a-9459-6a8aeaa312e3)
+***
+![contact_us](https://github.com/mirzaaa101/ScholarShare/assets/132736299/6ccaf95e-a5f4-4abf-99da-cfe2c2c1becb)
+***
+![home1](https://github.com/mirzaaa101/ScholarShare/assets/132736299/f39705dc-7e35-4c17-946c-ab56f1c1531f)
+![home2](https://github.com/mirzaaa101/ScholarShare/assets/132736299/55a110e0-fe79-4233-aea4-a99e0e33436d)
+***
+![post1](https://github.com/mirzaaa101/ScholarShare/assets/132736299/1ffd0cf5-acb7-4c23-abe8-d71a257d3d03)
+![post2](https://github.com/mirzaaa101/ScholarShare/assets/132736299/d40d76cc-d624-4efa-ad19-1295d61d4e9c)
+
+***
+![profile1](https://github.com/mirzaaa101/ScholarShare/assets/132736299/05bee97e-d670-4c98-8e84-d957e8a8848f)
+***
+![profile2](https://github.com/mirzaaa101/ScholarShare/assets/132736299/d948bdbb-52fe-4154-837a-ac024b7f2cec)
+***
+![statistics](https://github.com/mirzaaa101/ScholarShare/assets/132736299/a4b7a559-1371-41d9-b8d9-ef4c98155f8b)
+***
+![faqs](https://github.com/mirzaaa101/ScholarShare/assets/132736299/caf6a28f-f95b-4e19-8089-1f14f00bd232)
+***
+![about_us](https://github.com/mirzaaa101/ScholarShare/assets/132736299/a4cfa469-13a3-47e9-b050-6a1c28e98e49)
+![about_us2](https://github.com/mirzaaa101/ScholarShare/assets/132736299/2bdcad7d-b41d-401b-974d-8639413b8845)
+
+***
+
 ## Features
 
 - **Registration**: Easy and secure user registration for students and organizations.
