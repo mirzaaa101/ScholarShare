@@ -1,6 +1,6 @@
-# ScholarShare - Empowering Student Financial Solutions(https://hasibul217.github.io/mkdocs_new/?fbclid=IwAR1jpFQTu2Ndvckw0q4Rhzt-1j2Qi8eDMMyghmrt246zjxrPVONYIJpzu2s)
-
+# ScholarShare - Empowering Student Financial Solutions
 Welcome to ScholarShare, a web application developed by the ScrumTroops team to assist students in managing their financial needs and supporting student-driven fundraising campaigns. ScholarShare offers a range of features to empower students, promote financial literacy, and enhance the sense of community within educational institutions.
+##### For documentation-https://hasibul217.github.io/mkdocs_new/?fbclid=IwAR1jpFQTu2Ndvckw0q4Rhzt-1j2Qi8eDMMyghmrt246zjxrPVONYIJpzu2s
 
 ## Prototype
 ![welcoming_page1](https://github.com/mirzaaa101/ScholarShare/assets/132736299/4a0642af-c347-4d72-b1e8-f0936ddb4c22)
