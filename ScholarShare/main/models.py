@@ -52,13 +52,12 @@ class About(models.Model):
 
 
 class Message(models.Model):
-    name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=100)
-    comment = models.TextField(max_length=300)
+    userr = models.ForeignKey(NewUser, on_delete=models.CASCADE, null=False, default="null")
+    comment = models.TextField(max_length=300, null=True, default="null")
 
 
-    def __str__(self):
-        return f"From {self.name}"
+    class Meta:
+        db_table = "message"
 
 
 class LoanRequest(models.Model):

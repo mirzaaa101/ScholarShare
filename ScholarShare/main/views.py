@@ -14,6 +14,7 @@ from django.utils.encoding import force_bytes, force_str
 from itertools import chain
 from django.utils import timezone
 from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
 
 
 
@@ -57,9 +58,9 @@ def register_user(request):
         full_name = request.POST['full_name']
         bio = request.POST['bio']
         phone = request.POST['phone']
-        profile_photo = request.FILES['profile_photo']
-        uiuid = request.FILES['uiuid_photo']
-        nid = request.FILES['nid_photo']
+        # profile_photo = request.FILES['profile_photo']
+        # uiuid = request.FILES['uiuid_photo']
+        # nid = request.FILES['nid_photo']
 
         if User.objects.filter(username=username).exists():
             messages.error(request, 'The email address is already in use.Please try with another email.')
@@ -80,9 +81,9 @@ def register_user(request):
             password = password,
             full_name = full_name,
             phone=phone,
-            profile_photo=profile_photo,
-            uiuid=uiuid,
-            nid=nid,
+            # profile_photo=profile_photo,
+            # uiuid=uiuid,
+            # nid=nid,
             bio = bio,
         )
         new_user.save()
@@ -112,8 +113,8 @@ def login_user(request):
         username = request.POST['username']
         password = request.POST['password']
         if not username.endswith('uiu.ac.bd'):
-            messages.error(request, "You must log in with a valid email address")
-            return redirect('login')
+             messages.error(request, "You must log in with a valid email address")
+             return redirect('login')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -421,3 +422,20 @@ def delete_profile(request, userid, username):
         messages.error(request, "Your profile has been deleted successfully. You have been logged out.")
 
     return redirect('welcoming_page')
+
+@user_exists
+def core_text(request, user):
+    
+    msgs = Message.objects.all()
+    data = {
+        'data':user,
+        'msg':msgs,
+    }
+    return render(request, 'core/text.html', data)
+
+def sendmsg(req, fromm):
+
+    msg = req.POST.get('msg') 
+    messg = Message(userr = NewUser.objects.get(userid = fromm), comment = msg)
+    messg.save()
+    return redirect('core_text')

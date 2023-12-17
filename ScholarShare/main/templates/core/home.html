@@ -55,7 +55,12 @@
     }
 </style>
 <div id="post-input-container">
+  {% if user.profile_photo %}
   <img src="{{ user.profile_photo.url }}" id="profile-image" alt="Profile Image">
+{% else %}
+  <p>Profile</p>
+{% endif %}
+
   <input type="text" class="form-control" placeholder="Start posting" aria-label="Username" aria-describedby="basic-addon1" id="post-input" data-bs-toggle="modal" data-bs-target="#postModal" data-bs-whatever="@fat">
 </div>
 <hr class="line">

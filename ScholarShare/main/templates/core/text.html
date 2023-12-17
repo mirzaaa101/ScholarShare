@@ -1,0 +1,178 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <style>
+    #navbarScroll{
+      margin-left: 230px;
+    }
+    .nav-item{
+      margin-left: 60px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container my-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{%url 'welcoming_page'%}">
+          <img src="{% static 'welcome_page/demo_logo.png' %}" alt="demo_logo" width="56" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll d-flex">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{%url 'core_home'%}">
+                    <i class="fa-solid fa-house fa-lg" style="color: #000000;font-size: 25px;"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">
+                    <i class="fa-solid fa-box-archive fa-lg" style="color: #000000;font-size: 25px;"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'core_text' %}">
+                    <i class="fa-solid fa-message fa-lg" style="color: #000000;font-size: 25px;"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'core_statistics' %}">
+                    <i class="fa-solid fa-chart-simple fa-lg" style="color: #000000;font-size: 25px;"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{%url 'core_user'%}">
+                    <i class="fa-solid fa-user fa-lg" style="color: #000000;font-size: 25px;"></i>
+                </a>
+            </li>
+        </ul>
+          <div class="dropdown">
+            <button class="btn btn-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-bars" style="font-size: 25px;"></i>
+            </button>
+            <ul class="dropdown-menu" >
+              <li><a class="dropdown-item" href="{% url 'about' %}">About</a></li>
+              <li><a class="dropdown-item" href="#">Terms of use</a></li>
+              <li>
+                <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Edit Profile</a>
+              </li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
+              <li><a class="dropdown-item" href="#" data-bs-dismiss="modal"  data-bs-toggle="modal" data-bs-target="#profileDeleteModal">Delete Profile</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <!-- Custom Styles -->
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 80vh;
+      margin: 0;
+    }
+
+    #messages-container {
+      width: 35%;
+      margin: 0 auto;
+    }
+
+    #messages-header {
+      background-color: #f0f0f0;
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+      position: relative;
+    }
+
+    #participant-count {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: #777;
+    }
+
+    #messages {
+      height: 280px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    .container {
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-and-button-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 10px;
+      
+    }
+
+    #message {
+      flex: 1;
+      box-sizing: border-box;
+      margin-right: 10px;
+    }
+
+    #send {
+      width: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="messages-container" class="container my-4">
+    <div id="messages-header">
+      <h1>Public Chat</h1>
+     
+    </div>
+    <div id="messages" style="display: flex; flex-direction: column; overflow: scroll;">
+      {% for msg in msg %}
+      <div style="display: flex; flex-direction: row; width: 50%; height: 5%; margin-bottom: 40px;">
+          {% if msg.userr.profile_photo %}
+              <img src="{{ msg.userr.profile_photo.url }}" alt="" style="width: 40px; height: 40px; margin-right: 10px;">
+          {% else %}
+              <p>Profile</p>
+          {% endif %}
+          <!-- Display only the user ID here -->
+          <p style="font-size: 20px;">{{ msg.userr.userid }}: {{ msg.comment }}</p>
+      </div>
+  {% endfor %}
+    </div>
+    <div class="container">
+      <div class="input-and-button-container">
+        <form action="{% url 'sendmsg' fromm=data.userid %}" method="POST">
+          {%csrf_token%}
+          <input type="text" id="message" name="msg" class="form-control mb-2" placeholder="Write a massage..">
+          <button type="submit" id="send" class="btn btn-primary">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/socket.io@4.5.0/dist/socket.io.js"></script>
+  <script src="static/chat/js/chat.js"></script>
+</body>
+</html>
